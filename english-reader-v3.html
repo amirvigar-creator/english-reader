@@ -49,7 +49,9 @@ body.nocol .w.nw,body.nocol .w.lr{background:none}
 .ok{color:var(--ok)}.bad{color:var(--bad)}
 .chip{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:4px 10px;margin:3px;font-size:14px}
 .chip.ok{color:var(--ok);border-color:var(--ok)}
+.src{font-size:12px;color:var(--mut)}
 label{display:flex;align-items:center;gap:8px}
+body.focus .pc,body.focus #kw{display:none}
 @media(prefers-reduced-motion:reduce){#sh{transition:none}}
 body.shopen{padding-bottom:75vh}
 #toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:9}
@@ -72,26 +74,27 @@ body.shopen{padding-bottom:75vh}
 <div class="row"><label style="flex:1">اندازه متن فارسی: <span id="fpv"></span></label><input type="range" id="fp" min="14" max="28" style="flex:1"></div>
 <div class="row"><label>هدف روزانه: کلمه <input id="gw" type="number" min="1" style="width:90px"></label><label>دقیقه <input id="gm" type="number" min="1" style="width:90px"></label></div>
 <div class="row"><label>یادآوری روزانه ساعت <input id="remt" type="time" style="width:auto"></label><button id="remb">فعال‌سازی</button></div>
-<p class="mut" id="remm">یادآوری فقط وقتی برنامه باز یا در پس‌زمینه فعال باشد ارسال می‌شود. برای یادآوری کامل حتی با بسته بودن برنامه، به سرور نیاز است.</p>
-<h2>مترجم‌ها</h2><div class="row"><label>مترجم جمله:</label><select id="pvs"></select></div><div class="row"><label>مترجم کلمه:</label><select id="pws"></select></div><label><input type="checkbox" id="fbk"> اگر مترجم خطا داد، مترجم‌های دیگر امتحان شوند</label><p class="mut">کلیدها فقط روی همین دستگاه ذخیره می‌شوند و در فایل پشتیبان نمی‌آیند. DeepL و بعضی سرویس‌ها از مرورگر مستقیم کار نمی‌کنند و به «پروکسی» نیاز دارند.</p><div id="pcfg"></div>
-<div class="card"><b>حافظهٔ ترجمه (آفلاین)</b><p class="mut" id="trc"></p><div class="row"><button id="trclr">پاک‌کردن حافظهٔ ترجمه</button></div></div>
-<input id="em" type="email" placeholder="ایمیل (اختیاری؛ سقف روزانه ترجمه رایگان را بیشتر می‌کند)">
+<p class="mut" id="remm">یادآوری فقط وقتی برنامه باز یا در پس‌زمینه فعال باشد ارسال می‌شود.</p>
+<h2>مترجم‌ها</h2><div class="row"><label>مترجم جمله:</label><select id="pvs"></select></div><div class="row"><label>مترجم کلمه:</label><select id="pws"></select></div><label><input type="checkbox" id="fbk"> اگر مترجم خطا داد، مترجم‌های دیگر امتحان شوند</label><p class="mut">کلیدها فقط روی همین دستگاه ذخیره می‌شوند و در فایل پشتیبان نمی‌آیند.</p><div id="pcfg"></div>
+<label><input type="checkbox" id="pf"> ترجمه‌ی صفحه‌ی بعد در پس‌زمینه (مصرف بیشتر اینترنت و سهمیه)</label>
 <h2>فونت فارسی</h2>
 <select id="ft"><option value="a">دست‌نویس (Aref Ruqaa)</option><option value="k">دست‌نویس (Katibeh)</option><option value="n">نستعلیق</option><option value="c">فونت خودم (handwriting.ttf)</option><option value="d">پیش‌فرض</option></select>
 <div class="fa" style="margin-top:8px">این یک نمونه متن فارسی است</div>
-<h2>پشتیبان‌گیری و انتقال به گوشی دیگر</h2>
-<p class="mut">خروجی، همه چیز (کتاب‌ها، کارت‌ها، پیشرفت و آمار) را در یک فایل ذخیره می‌کند. آن را در گوشی دیگر وارد کنید.</p>
+<h2>پشتیبان‌گیری</h2>
+<p class="mut">خروجی، همه چیز (کتاب‌ها، کارت‌ها، ترجمه‌های ذخیره‌شده، پیشرفت و آمار) را در یک فایل ذخیره می‌کند.</p>
 <div class="row"><button id="exp">ذخیره پشتیبان</button><label style="flex:1"><input id="imp" type="file" accept=".json,application/json"></label></div>
+<div class="row"><button id="rbk">بازگردانی آخرین نسخه‌ی خودکار</button></div>
 <p class="mut" id="bmsg"></p>
 </section>
 
 <section id="rd" class="v">
 <div class="row sp"><b id="rt"></b><span class="mut" id="rp"></span></div>
 <div class="bar"><i id="rb"></i></div>
-<div class="pc"><div class="row"><label>مترجم این صفحه:</label><select id="pb" style="width:auto"></select></div><div class="row"><button id="ta">ترجمهٔ کل صفحه</button><button id="tx">پاک‌کردن ترجمه‌ها</button></div><div class="row"><label>از جملهٔ <input id="rf" type="number" min="1" style="width:70px"></label><label>تا <input id="rt2" type="number" min="1" style="width:70px"></label><button id="trg">ترجمهٔ بازه</button></div><div class="mut">با تیک کنار هر جمله، فقط همان جمله ترجمه می‌شود.</div></div>
-<div class="row sp mut"><label><input type="checkbox" id="tg" checked> نمایش ترجمه</label><span id="tp"></span></div>
+<div class="pc"><div class="row"><label>مترجم این صفحه:</label><select id="pb" style="width:auto"></select></div><div class="row"><button id="ta">ترجمهٔ کل صفحه</button><button id="tra">ترجمه مجدد صفحه</button><button id="tx">پاک‌کردن نمایش ترجمه‌ها</button></div><div class="row"><label>از جملهٔ <input id="rf" type="number" min="1" style="width:70px"></label><label>تا <input id="rt2" type="number" min="1" style="width:70px"></label><button id="trg">ترجمهٔ بازه</button></div><div class="mut">با تیک کنار هر جمله، فقط همان جمله ترجمه می‌شود. ترجمه‌ها خودکار ذخیره می‌شوند.</div></div>
+<div class="row sp mut"><label><input type="checkbox" id="tg" checked> نمایش ترجمه</label><button id="foc">حالت تمرکز</button><span id="tp"></span></div>
+<div class="row sp mut"><span id="nwc"></span><button id="mkc">ساخت کارت از کلمات جدید این صفحه</button></div>
 <div id="txt" lang="en"></div>
-<div class="card" style="margin-top:12px"><b>کلمات کلیدی این صفحه</b> <button id="vbb" class="ps">بارگذاری</button><div id="vb"></div></div>
+<div class="card" id="kw" style="margin-top:12px"><b>کلمات کلیدی این صفحه</b> <button id="vbb" class="ps">بارگذاری</button><div id="vb"></div></div>
 <div class="row sp" style="margin-top:14px"><button id="pv">صفحه قبل</button><button id="nx" class="p">صفحه بعد</button></div>
 </section>
 
@@ -100,7 +103,7 @@ body.shopen{padding-bottom:75vh}
 <div id="tags"></div>
 <div id="rv"></div>
 <h2>کلمات ذخیره‌شده</h2>
-<div class="row"><button id="csv">دانلود CSV (برای Anki)</button><button id="cp">کپی فهرست</button><button id="dla">ذخیره تلفظ‌ها برای آفلاین</button></div>
+<div class="row"><button id="csv">دانلود CSV (برای Anki)</button><button id="cp">کپی فهرست</button></div>
 <div id="wl"></div>
 <h2>ورود از Anki یا فایل CSV</h2>
 <p class="mut">فایل CSV با ستون اول «کلمه» و ستون دوم «معنی فارسی» (اختیاری: ستون سوم تلفظ، ستون چهارم جمله). کلمات تکراری نادیده گرفته می‌شوند.</p>
@@ -158,9 +161,9 @@ const today=()=>fmt(new Date());
 const COMMON=new Set('the a an and or but if of to in on at by for with from as is are was were be been being it this that these those i you he she we they me him her us them my your his its our their not no yes do does did have has had will would can could should may might must so than then there here what which who whom whose when where why how all any some each every both more most other such only own same too very just also into over under about up down out off again once one like get got go going went come came make made say said see saw know knew think want its it\'s i\'m don\'t isn\'t that\'s there\'s let\'s'.split(' '));
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const DEF={cards:{},known:{},days:[],time:{},wstats:{},mist:{},seen:[],prog:{},log:[],hist:{},marks:[],notes:{},
- set:{em:'',ft:'a',hc:true,col:true,fe:19,fp:19,th:'auto',gw:20,gm:15,remt:'',rn:'',atr:'page',lb:'',pv:'mm',pw:'mm',fb:false,pk:{}}};
+ set:{em:'',ft:'a',hc:true,col:true,fe:19,fp:19,th:'auto',gw:20,gm:15,remt:'',rn:'',atr:'page',lb:'',pv:'mm',pw:'mm',fb:false,pk:{},pf:true,lastBak:''}};
 const KEYS=Object.keys(DEF);
-const S={};let books=[],cur=null,cw='',cs='',curW='',editW='',tagF='',vt=0,running=false;
+const S={};let books=[],cur=null,cw='',cs='',curW='',editW='',tagF='',vt=0;
 const mem=Object.create(null);const nrm=s=>s.toLowerCase().replace(/\u2019/g,"'");
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',5000)}
 
@@ -176,10 +179,22 @@ async function idbAll(st){const d=await db();return new Promise((res,rej)=>{cons
 async function idbPairs(st){const d=await db();return new Promise((res,rej)=>{const o={},q=d.transaction(st).objectStore(st).openCursor();q.onsuccess=()=>{const c=q.result;if(c){o[c.key]=c.value;c.continue()}else res(o)};q.onerror=()=>rej(q.error)})}
 async function idbBulk(st,obj){const d=await db();return new Promise((res,rej)=>{const t=d.transaction(st,'readwrite'),s=t.objectStore(st);for(const k in obj)s.put(obj[k],k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)})}
 async function idbDelMany(st,keys){const d=await db();return new Promise(res=>{const t=d.transaction(st,'readwrite'),s=t.objectStore(st);keys.forEach(k=>{delete mem[k];s.delete(k)});t.oncomplete=t.onerror=()=>res()})}
-const save=k=>idbPut('kv',k,S[k]).catch(()=>toast('ذخیره‌سازی ناموفق بود؛ شاید حافظه پر است. پشتیبان بگیرید.'));
 
-async function getTr(t){if(mem[t])return mem[t];const v=await idbGet('tr',t);if(v)mem[t]=v;return v||''}
-async function setTr(t,v){mem[t]=v;await idbPut('tr',t,v).catch(()=>{})}
+/* Saving: each key is written separately, and writes are debounced so page turns don't rewrite everything */
+const saveT={};
+function saveNow(k){clearTimeout(saveT[k]);delete saveT[k];return idbPut('kv',k,S[k]).catch(()=>toast('ذخیره‌سازی ناموفق بود؛ شاید حافظه پر است. پشتیبان بگیرید.'))}
+function save(k){clearTimeout(saveT[k]);saveT[k]=setTimeout(()=>saveNow(k),400)}
+const flushAll=()=>Object.keys(saveT).forEach(saveNow);
+window.addEventListener('pagehide',flushAll);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flushAll()});
+
+/* ---------- translation cache ----------
+   Record: {t: text, p: provider, m: model, at: time, man: manual?}
+   Key: v2|provider|text|context   (context = sentence, for words; '' for sentences) */
+const tkey=(p,t,c)=>['v2',p,t,c||''].join('|');
+async function getTr(k){if(mem[k])return mem[k];let v=await idbGet('tr',k);if(typeof v==='string')v={t:v,p:'old',at:0};if(v)mem[k]=v;return v||null}
+async function setTr(k,rec){mem[k]=rec;await idbPut('tr',k,rec).catch(()=>{})}
+const srcTag=async(t,p,c)=>(await getTr(tkey(p,t,c)))?'ذخیره':'اینترنت';
 
 function ensureCard(c){if(c.ef===undefined){c.ef=2.5;c.reps=c.box>0?c.box:0;c.interval=IV[c.box||0]||0;c.last=0}
  if(c.due===undefined)c.due=0;if(!c.tags)c.tags=[];if(!c.added)c.added=Date.now();return c}
@@ -204,12 +219,11 @@ async function migrateOld(){
  if(lsGet('em',null))S.set.em=lsGet('em',null);
  if(lsGet('ft',null))S.set.ft=lsGet('ft',null);
  for(const k of Object.keys(localStorage))if(k.startsWith('p:'))S.prog[k.slice(2)]=lsGet(k,0);
- await Promise.all(KEYS.map(save));
+ await Promise.all(KEYS.map(saveNow));
  localStorage.setItem('migrated3','1');
 }
 
 /* ---------- word status and colours ---------- */
-// known = bold-free, dimmed | new = blue (not saved yet) | learn = yellow (saved, interval < 21 days)
 function wstatus(w){if(S.known[w]||(S.set.hc&&COMMON.has(w)))return 'known';
  const c=S.cards[w];if(!c)return 'new';return c.interval>=21?'known':'learn'}
 const isKnownW=w=>wstatus(w)==='known';
@@ -233,16 +247,11 @@ function view(v){document.querySelectorAll('.v').forEach(e=>e.classList.toggle('
  window.scrollTo(0,0)}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='rd'&&!cur){if(books.length)openBook(books.find(x=>x.id===S.set.lb)?S.set.lb:books[0].id);else return}view(b.dataset.v)});
 
-async function trStat(){try{const d=await db(),n=await new Promise(r=>{const q=d.transaction('tr').objectStore('tr').count();q.onsuccess=()=>r(q.result);q.onerror=()=>r(0)});
- $('trc').textContent=n+' ترجمه روی این دستگاه ذخیره شده است؛ بدون اینترنت هم نمایش داده می‌شود و دوباره ترجمه نمی‌شود.'}catch(e){}}
-$('trclr').onclick=async()=>{if(!confirm('همهٔ ترجمه‌های ذخیره‌شده پاک شود؟ (کارت‌های لغت پاک نمی‌شوند)'))return;const d=await db();
- await new Promise(r=>{const t=d.transaction('tr','readwrite');t.objectStore('tr').clear();t.oncomplete=t.onerror=r});for(const k in mem)delete mem[k];trStat()};
-function lib(){trStat();const h=books.map(b=>`<div class="card row sp"><div><b>${esc(b.title)}</b><div class="mut">${b.s.length} جمله</div></div>
-<div class="row"><button class="p" data-o="${esc(b.id)}">خواندن</button><button data-d="${esc(b.id)}">حذف</button></div></div>`).join('');
+function lib(){const h=books.map(b=>`<div class="card row sp"><div><b>${esc(b.title)}</b><div class="mut">${b.s.length} جمله</div><div class="mut" id="ob_${esc(b.id)}">${bookStats(b)}</div></div>
+<div class="row"><button class="p" data-o="${esc(b.id)}">خواندن</button><button data-ob="${esc(b.id)}">ذخیره آفلاین</button><button data-d="${esc(b.id)}">حذف</button></div></div>`).join('');
  $('books').innerHTML=h||'<p class="mut">هنوز کتابی نیست. متن اول خود را پایین اضافه کنید.</p>'}
-function split(t){t=t.replace(/[\u2018\u2019\u02bc]/g,"'").replace(/(\w)-[ \t]*\r?\n[ \t]*(?=[a-z])/g,'$1');
- return t.split(/\r?\n\s*\r?\n/).flatMap(p=>{p=p.replace(/\s+/g,' ').replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|Mt|St|Inc|Ltd|Gen|Capt|Col|Rev)\./g,'$1\u0001').replace(/\b(?:[A-Za-z]\.){2,}/g,m=>m.replace(/\./g,'\u0001')).replace(/(\d)\.(\d)/g,'$1\u0002$2');
-  return (p.match(/[^.!?]+[.!?]*["')\u201d]*\s*/g)||[]).map(x=>x.replace(/[\u0001\u0002]/g,'.').trim()).filter(x=>x.length>1)})}
+function split(t){t=t.replace(/[\u2018\u2019\u02bc]/g,"'").replace(/\s+/g,' ').replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|Mt)\./g,'$1\u0001').replace(/(\d)\.(\d)/g,'$1\u0002$2');
+ return (t.match(/[^.!?]+[.!?]*["')\u201d]*\s*/g)||[]).map(x=>x.replace(/[\u0001\u0002]/g,'.').trim()).filter(x=>x.length>1)}
 
 /* ---------- adding books (txt, epub, pdf) ---------- */
 $('add').onclick=async()=>{const t=$('bx').value.trim(),n=$('bt').value.trim()||'بدون عنوان';
@@ -271,8 +280,7 @@ async function readPdf(f){await loadScript(PDFJS_URL);const lib=window.pdfjsLib;
  const doc=await lib.getDocument({data:await f.arrayBuffer(),isEvalSupported:false}).promise;const out=[];
  for(let i=1;i<=doc.numPages;i++){const pg=await doc.getPage(i);const content=await pg.getTextContent();
   out.push(content.items.map(it=>it.str+(it.hasEOL?'\n':' ')).join(''))}
- const cnt=Object.create(null);out.forEach(p=>new Set(p.split('\n').map(l=>l.trim())).forEach(l=>{if(l&&l.length<80)cnt[l]=(cnt[l]||0)+1}));
- return out.map(p=>p.split('\n').filter(l=>{l=l.trim();return !(/^\d+$/.test(l)||(out.length>=4&&cnt[l]>=3))}).join('\n')).join('\n')}
+ return out.join('\n')}
 $('bf').onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.name.split('.').pop().toLowerCase();
  $('msg').textContent='در حال خواندن فایل...';
  try{let text;if(ext==='epub')text=await readEpub(f);else if(ext==='pdf')text=await readPdf(f);else text=await f.text();
@@ -280,8 +288,16 @@ $('bf').onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.na
   $('msg').textContent=text.trim()?'فایل خوانده شد. دکمه «ذخیره کتاب» را بزنید.':'متنی پیدا نشد (PDF تصویری نیاز به OCR دارد).'}
  catch(err){$('msg').textContent='خواندن فایل ممکن نشد: '+err.message}};
 
+/* Deleting a book also cleans up its translations, word stats and mistakes (saved cards are kept) */
 async function delBook(id){if(!confirm('این کتاب حذف شود؟'))return;const bk=books.find(b=>b.id===id);books=books.filter(b=>b.id!==id);trTok++;idx=null;await idbDel('books',id);
- if(bk)await idbDelMany('tr',bk.s.flatMap(x=>[x,...Object.keys(PV).map(p=>p+'|'+x)]));S.seen=S.seen.filter(k=>!k.startsWith(id+':'));save('seen');
+ if(bk)await idbDelMany('tr',bk.s.flatMap(x=>Object.keys(PV).map(p=>tkey(p,x,''))));
+ S.seen=S.seen.filter(k=>!k.startsWith(id+':'));save('seen');
+ if(bk){
+  const rem=new Set(books.flatMap(b=>b.s).flatMap(s=>s.toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g)||[]));
+  for(const w of Object.keys(S.wstats)){if(!rem.has(w)){delete S.wstats[w];continue}
+   S.wstats[w].refs=S.wstats[w].refs.filter(r=>r.b!==bk.title)}
+  for(const w of Object.keys(S.mist))if(!rem.has(w)&&!S.cards[w])delete S.mist[w];
+  save('wstats');save('mist')}
  if(S.prog[id]!==undefined){delete S.prog[id];save('prog')}
  if(cur&&cur.id===id)cur=null;lib()}
 
@@ -296,7 +312,7 @@ function page(){const a=cur.p*PS,tot=Math.ceil(cur.s.length/PS);let h='';
  $('rt').textContent=cur.title;$('rp').textContent=(cur.p+1)+' / '+tot;$('rb').style.width=((cur.p+1)/tot*100)+'%';
  S.prog[cur.id]=cur.p;save('prog');
  $('pv').disabled=cur.p===0;$('nx').disabled=cur.p>=tot-1;$('txt').classList.toggle('hid',!$('tg').checked);
- logPage();trTok++;$('vb').innerHTML='';$('tp').textContent='';closeSh();window.scrollTo(0,0)}
+ logPage();trTok++;$('vb').innerHTML='';$('tp').textContent='';closeSh();window.scrollTo(0,0);updateNew();prefetchNext()}
 $('nx').onclick=()=>{cur.p++;page()};$('pv').onclick=()=>{cur.p--;page()};
 $('txt').onclick=e=>{const pb=e.target.closest('.ps');if(pb){speak(cur.s[+pb.dataset.p]);return}const s=e.target.closest('.s');if(!s)return;
  document.querySelectorAll('.sel,.sel2').forEach(x=>x.classList.remove('sel','sel2'));
@@ -309,6 +325,40 @@ function logPage(){const key=cur.id+':'+cur.p;if(S.seen.includes(key))return;S.s
  const words=new Set(cur.s.slice(cur.p*PS,cur.p*PS+PS).join(' ').toLowerCase().replace(/\u2019/g,"'").match(/[a-z]+(?:'[a-z]+)?/g)||[]);
  for(const w of words){const st=S.wstats[w]||(S.wstats[w]={n:0,refs:[]});st.n++;if(st.refs.length<20)st.refs.push({b:cur.title,p:cur.p+1})}
  save('seen');save('wstats')}
+
+/* ---------- new words, background prefetch, book stats, auto backup ---------- */
+/* Words on the current page that are neither saved nor known: Map(word -> first sentence containing it) */
+function newWordsOnPage(){const m=new Map(),a=cur.p*PS;
+ for(let i=a;i<Math.min(a+PS,cur.s.length);i++){const s=cur.s[i];
+  for(const w of (s.toLowerCase().replace(/’/g,"'").match(/[a-z]+(?:'[a-z]+)?/g)||[])){
+   if(w.length<3||m.has(w)||wstatus(w)!=='new')continue;m.set(w,s)}}
+ return m}
+function updateNew(){$('nwc').textContent='کلمه‌ی جدید در این صفحه: '+newWordsOnPage().size}
+/* Creates a card for every new word on the page, then fills its meaning from the word translator */
+async function makeCardsFromPage(){const m=newWordsOnPage();let n=0;
+ for(const [w,sen] of m){if(S.cards[w])continue;
+  const c=ensureCard({fa:'',ipa:'',ex:sen,added:Date.now(),tags:[]});S.cards[w]=c;n++;save('cards');
+  const f=await tr(w,S.set.pw,sen);if(f){c.fa=f;save('cards')}
+  await sl(400)}
+ snapHist();updateNew();paint();toast(n+' کارت ساخته شد')}
+/* Translates the next page in the background so turning pages is instant. Stops on the first failure (quota or offline). */
+let pfTok=0;
+async function prefetchNext(){const my=++pfTok,b=cur,p=pbv(),a=(b.p+1)*PS;
+ if(!S.set.pf||a>=b.s.length)return;
+ for(let i=a;i<Math.min(a+PS,b.s.length);i++){
+  if(my!==pfTok||cur!==b)return;
+  if(await getTr(tkey(p,b.s[i],'')))continue;
+  const x=await tr(b.s[i],p);if(!x)return;
+  await sl(800)}}
+/* Book card summary: percent read, words learned, rough reading time */
+function bookStats(b){const txt=b.s.join(' ').toLowerCase().replace(/’/g,"'"),words=new Set(txt.match(/[a-z]+(?:'[a-z]+)?/g)||[]);
+ let learned=0;for(const w of words)if(S.known[w]||(S.cards[w]&&S.cards[w].interval>=21))learned++;
+ const pct=words.size?Math.round(learned/words.size*100):0,mins=Math.max(1,Math.round(txt.split(/\s+/).length/200)),
+  pages=Math.max(1,Math.ceil(b.s.length/PS)),read=Math.round(((S.prog[b.id]||0)+1)/pages*100);
+ return `خوانده‌شده: ${read}% · یادگرفته: ${pct}% (${learned} از ${words.size} کلمه) · حدود ${mins} دقیقه`}
+/* Snapshot of learning data (not books or translations) saved before an import overwrites anything */
+async function makeAutoSnap(){const kv={};for(const k of ['cards','known','mist','notes','wstats','prog','time','hist','days','seen','marks','log'])kv[k]=JSON.parse(JSON.stringify(S[k]));
+ await idbPut('kv','autobak',{at:Date.now(),kv})}
 
 /* ---------- speech ---------- */
 function speak(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
@@ -336,31 +386,30 @@ async function playWord(w){const k=w.toLowerCase();const d=await dict(k);
 const dec=x=>{const t=document.createElement('textarea');t.innerHTML=x;return t.value.trim()};
 const cfg=id=>S.set.pk[id]||(S.set.pk[id]={});
 const LP=(t,c)=>c?`Translate this English word or phrase into Persian (Farsi) as used in the sentence. Reply only with 1-3 short Persian meanings separated by «، ».\nWord: ${t}\nSentence: ${c}`:`Translate the following English text into natural Persian (Farsi). Reply only with the translation.\n\n${t}`;
-async function J(url,opt){const r=await fetch(url,opt);if(!r.ok)throw new Error('HTTP '+r.status+(r.status===404||r.status===400?' (نام مدل، کلید یا آدرس را بررسی کنید)':''));return r.json()}
+async function J(url,opt){const r=await fetch(url,opt);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
 const px=(id,u)=>(cfg(id).proxy||'')+u,JH={'Content-Type':'application/json'};
 function chunks(t){const o=[];let c='';for(const w of t.split(' ')){if((c+' '+w).trim().length>400){if(c.trim())o.push(c.trim());c=w}else c+=' '+w}if(c.trim())o.push(c.trim());return o}
 const KP=['key','کلید API'],PP=['proxy','آدرس پروکسی (اختیاری)'],MP=['model','نام مدل (اختیاری)'],UP=['url','آدرس پایه'];
 const PV={
- mm:{n:'MyMemory',f:[],ok:()=>true,run:async t=>{const one=async q=>{const d=await J('https://api.mymemory.translated.net/get?langpair=en|fa&q='+encodeURIComponent(q)+(S.set.em?'&de='+encodeURIComponent(S.set.em):''));const x=d.responseData&&d.responseData.translatedText;if(!x||/MYMEMORY WARNING|QUERY LENGTH/i.test(x))throw new Error('سقف روزانه یا خطا');return x};
+ mm:{n:'MyMemory',dm:'',f:[],ok:()=>true,run:async t=>{const one=async q=>{const d=await J('https://api.mymemory.translated.net/get?langpair=en|fa&q='+encodeURIComponent(q)+(S.set.em?'&de='+encodeURIComponent(S.set.em):''));const x=d.responseData&&d.responseData.translatedText;if(!x||/MYMEMORY WARNING|QUERY LENGTH/i.test(x))throw new Error('سقف روزانه یا خطا');return x};
   if(t.length<=400)return one(t);const o=[];for(const p of chunks(t))o.push(await one(p));return o.join(' ')}},
- google:{n:'Google Translate',f:[KP,PP],ok:()=>!!cfg('google').key,run:t=>J(px('google','https://translation.googleapis.com/language/translate/v2?key='+encodeURIComponent(cfg('google').key)),{method:'POST',headers:JH,body:JSON.stringify({q:t,source:'en',target:'fa',format:'text'})}).then(d=>d.data.translations[0].translatedText)},
- deepl:{n:'DeepL',f:[KP,PP],ok:()=>!!cfg('deepl').key,run:t=>{const k=cfg('deepl').key;return J(px('deepl','https://api'+(k.endsWith(':fx')?'-free':'')+'.deepl.com/v2/translate'),{method:'POST',headers:{...JH,Authorization:'DeepL-Auth-Key '+k},body:JSON.stringify({text:[t],source_lang:'EN',target_lang:'FA'})}).then(d=>d.translations[0].text)}},
- ms:{n:'Microsoft Translator',f:[KP,['region','منطقه (Region)'],PP],ok:()=>!!cfg('ms').key,run:t=>{const c=cfg('ms');return J(px('ms','https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=fa'),{method:'POST',headers:{...JH,'Ocp-Apim-Subscription-Key':c.key,...(c.region?{'Ocp-Apim-Subscription-Region':c.region}:{})},body:JSON.stringify([{Text:t}])}).then(d=>d[0].translations[0].text)}},
- libre:{n:'LibreTranslate',f:[UP,KP,PP],ok:()=>!!cfg('libre').url,run:t=>{const c=cfg('libre');return J(px('libre',c.url.replace(/\/$/,'')+'/translate'),{method:'POST',headers:JH,body:JSON.stringify({q:t,source:'en',target:'fa',format:'text',api_key:c.key||undefined})}).then(d=>d.translatedText)}},
- gemini:{ctx:1,n:'Gemini',f:[KP,MP],ok:()=>!!cfg('gemini').key,run:(t,x)=>{const c=cfg('gemini');return J('https://generativelanguage.googleapis.com/v1beta/models/'+(c.model||'gemini-flash-latest')+':generateContent',{method:'POST',headers:{...JH,'x-goog-api-key':c.key},body:JSON.stringify({contents:[{parts:[{text:LP(t,x)}]}]})}).then(d=>d.candidates[0].content.parts[0].text)}},
- openai:{ctx:1,n:'OpenAI / سازگار (OpenRouter، Ollama…)',f:[UP,KP,MP],ok:()=>{const c=cfg('openai');return !!(c.key||c.url)},run:(t,x)=>{const c=cfg('openai');return J((c.url||'https://api.openai.com/v1').replace(/\/$/,'')+'/chat/completions',{method:'POST',headers:{...JH,...(c.key?{Authorization:'Bearer '+c.key}:{})},body:JSON.stringify({model:c.model||'gpt-4o-mini',messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.choices[0].message.content)}},
- claude:{ctx:1,n:'Claude',f:[KP,MP],ok:()=>!!cfg('claude').key,run:(t,x)=>{const c=cfg('claude');return J('https://api.anthropic.com/v1/messages',{method:'POST',headers:{...JH,'x-api-key':c.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:c.model||'claude-haiku-5-5',max_tokens:1000,messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.content[0].text)}},
- chrome:{n:'Chrome (روی دستگاه)',f:[],ok:()=>'Translator' in self,run:async t=>{if(!PV.chrome.t)PV.chrome.t=await Translator.create({sourceLanguage:'en',targetLanguage:'fa'});return PV.chrome.t.translate(t)}}
+ google:{n:'Google Translate',dm:'',f:[KP,PP],ok:()=>!!cfg('google').key,run:t=>J(px('google','https://translation.googleapis.com/language/translate/v2'),{method:'POST',headers:{...JH,'x-goog-api-key':cfg('google').key},body:JSON.stringify({q:t,source:'en',target:'fa',format:'text'})}).then(d=>d.data.translations[0].translatedText)},
+ deepl:{n:'DeepL',dm:'',f:[KP,PP],ok:()=>!!cfg('deepl').key,run:t=>{const k=cfg('deepl').key;return J(px('deepl','https://api'+(k.endsWith(':fx')?'-free':'')+'.deepl.com/v2/translate'),{method:'POST',headers:{...JH,Authorization:'DeepL-Auth-Key '+k},body:JSON.stringify({text:[t],source_lang:'EN',target_lang:'FA'})}).then(d=>d.translations[0].text)}},
+ ms:{n:'Microsoft Translator',dm:'',f:[KP,['region','منطقه (Region)'],PP],ok:()=>!!cfg('ms').key,run:t=>{const c=cfg('ms');return J(px('ms','https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=fa'),{method:'POST',headers:{...JH,'Ocp-Apim-Subscription-Key':c.key,...(c.region?{'Ocp-Apim-Subscription-Region':c.region}:{})},body:JSON.stringify([{Text:t}])}).then(d=>d[0].translations[0].text)}},
+ libre:{n:'LibreTranslate',dm:'',f:[UP,KP,PP],ok:()=>!!cfg('libre').url,run:t=>{const c=cfg('libre');return J(px('libre',c.url.replace(/\/$/,'')+'/translate'),{method:'POST',headers:JH,body:JSON.stringify({q:t,source:'en',target:'fa',format:'text',api_key:c.key||undefined})}).then(d=>d.translatedText)}},
+ gemini:{n:'Gemini',dm:'gemini-2.0-flash',f:[KP,MP],ok:()=>!!cfg('gemini').key,run:(t,x)=>{const c=cfg('gemini');return J('https://generativelanguage.googleapis.com/v1beta/models/'+(c.model||'gemini-2.0-flash')+':generateContent',{method:'POST',headers:{...JH,'x-goog-api-key':c.key},body:JSON.stringify({contents:[{parts:[{text:LP(t,x)}]}]})}).then(d=>d.candidates[0].content.parts[0].text)}},
+ openai:{n:'OpenAI / سازگار (OpenRouter، Ollama…)',dm:'gpt-4o-mini',f:[UP,KP,MP],ok:()=>{const c=cfg('openai');return !!(c.key||c.url)},run:(t,x)=>{const c=cfg('openai');return J((c.url||'https://api.openai.com/v1').replace(/\/$/,'')+'/chat/completions',{method:'POST',headers:{...JH,...(c.key?{Authorization:'Bearer '+c.key}:{})},body:JSON.stringify({model:c.model||'gpt-4o-mini',messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.choices[0].message.content)}},
+ claude:{n:'Claude',dm:'claude-haiku-5-5',f:[KP,MP],ok:()=>!!cfg('claude').key,run:(t,x)=>{const c=cfg('claude');return J('https://api.anthropic.com/v1/messages',{method:'POST',headers:{...JH,'x-api-key':c.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:c.model||'claude-haiku-5-5',max_tokens:1000,messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.content[0].text)}},
+ chrome:{n:'Chrome (روی دستگاه)',dm:'',f:[],ok:()=>'Translator' in self,run:async t=>{if(!PV.chrome.inst)PV.chrome.inst=await Translator.create({sourceLanguage:'en',targetLanguage:'fa'});return PV.chrome.inst.translate(t)}}
 };
 let trErr='';
-const trKey=(p,t)=>p==='mm'?t:p+'|'+t;
-async function trP(t,p,c){const base=trKey(p,t),cx=PV[p].ctx&&c,k=cx?'c|'+p+'|'+t+'|'+nrm(c):base;
- let h=await getTr(k);if(h)return h;
- if(cx){h=await getTr(base);if(h&&!navigator.onLine)return h}
- if(!navigator.onLine){trErr='آفلاین هستید و این مورد هنوز ذخیره نشده است';return ''}
- try{const x=dec(await PV[p].run(t,c));if(x){await setTr(k,x);if(cx&&!(await getTr(base)))await setTr(base,x);return x}}catch(e){trErr=PV[p].n+': '+(e.message||e)}return ''}
-async function tr(t,p,c){p=PV[p]?p:S.set.pv;let x=await trP(t,p,c);if(x||!S.set.fb)return x;
- for(const q in PV){if(q===p||!PV[q].ok())continue;x=await trP(t,q,c);if(x)return x}return ''}
+/* Returns cached text when available. force=true fetches again, but never overwrites a manual entry. */
+async function trP(t,p,c,force){const k=tkey(p,t,c),h=await getTr(k);
+ if(h&&(!force||h.man))return h.t;
+ try{const x=dec(await PV[p].run(t,c));if(x){await setTr(k,{t:x,p,m:cfg(p).model||PV[p].dm||'',at:Date.now(),man:false});return x}}catch(e){trErr=PV[p].n+': '+(e.message||e)}
+ return ''}
+async function tr(t,p,c,force){p=PV[p]?p:S.set.pv;let x=await trP(t,p,c,force);if(x||!S.set.fb)return x;
+ for(const q in PV){if(q===p||!PV[q].ok())continue;x=await trP(t,q,c,force);if(x)return x}return ''}
 
 /* ---------- similar word forms (rough stemming) ---------- */
 function stem(w){let s=w.toLowerCase();
@@ -380,11 +429,11 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
  const marked=S.marks.some(m=>m.s===sen);
  sh.innerHTML=(w?`<div class="row sp"><span><span class="big">${esc(w)}</span> <span class="mut" id="ipa"></span></span><button id="pw">شنیدن</button></div>
  <div class="fa" id="wf">...</div><div class="mut" id="df"></div>
- <div class="row" style="margin:8px 0"><button class="p" id="sw">ذخیره کلمه</button><button id="kn">${S.known[w]?'حذف از کلمات بلد':'این را بلدم'}</button></div>
+ <div class="row" style="margin:8px 0"><button class="p" id="sw">ذخیره کلمه</button><button id="kn">${S.known[w]?'حذف از کلمات بلد':'این را بلدم'}</button><button id="rw">ترجمه مجدد کلمه</button></div>
  <textarea id="nt" placeholder="یادداشت شخصی برای این کلمه" style="min-height:60px">${esc(S.notes[w]||'')}</textarea>
  <div class="mut" id="sim"></div><hr style="border:0;border-top:1px solid var(--bd)">`:'')+
  `<p style="margin:8px 0;direction:ltr;text-align:left">${esc(sen)}</p><div class="fa" id="sf"></div>
- <div class="row" style="margin-top:8px"><button id="ps2">شنیدن جمله</button><button id="ts">ترجمه جمله</button><button id="mk">${marked?'حذف نشانه':'نشانه‌گذاری جمله'}</button><button id="cl">بستن</button></div>`;
+ <div class="row" style="margin-top:8px"><button id="ps2">شنیدن جمله</button><button id="ts">ترجمه جمله</button><button id="rs">ترجمه مجدد جمله</button><button id="mk">${marked?'حذف نشانه':'نشانه‌گذاری جمله'}</button><button id="cl">بستن</button></div>`;
  sh.classList.add('on');document.body.classList.add('shopen');
  const sel=document.querySelector('#txt .w.sel,#txt .s.sel2');if(sel)setTimeout(()=>{const r=sel.getBoundingClientRect(),lim=innerHeight-$('sh').offsetHeight-20;if(r.bottom>lim)scrollBy({top:r.bottom-lim+10,behavior:'smooth'})},60);
  $('ps2').onclick=()=>speak(sen);
@@ -392,7 +441,8 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
  $('mk').onclick=()=>{const i=S.marks.findIndex(m=>m.s===sen);
   if(i>=0)S.marks.splice(i,1);else S.marks.push({s:sen,b:cur?cur.title:''});
   save('marks');$('mk').textContent=i>=0?'نشانه‌گذاری جمله':'حذف نشانه'};
- $('ts').onclick=async()=>{$('sf').textContent='...';$('sf').textContent=(await tr(sen,pbv()))||'ترجمه در دسترس نیست. اتصال را بررسی کنید یا بعداً امتحان کنید.'};
+ $('ts').onclick=async()=>{const src=await srcTag(sen,pbv(),'');$('sf').textContent='...';const x=await tr(sen,pbv());$('sf').textContent=x?`[${src}] ${x}`:'ترجمه در دسترس نیست. اتصال را بررسی کنید یا بعداً امتحان کنید.'};
+ $('rs').onclick=async()=>{$('sf').textContent='...';const x=await tr(sen,pbv(),'',true);$('sf').textContent=x?`[اینترنت] ${x}`:'ترجمه انجام نشد.'};
  if(!w)return;
  $('pw').onclick=()=>playWord(w);
  $('nt').oninput=()=>{const v=$('nt').value.trim();if(v)S.notes[w]=v;else delete S.notes[w];save('notes')};
@@ -401,14 +451,18 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
  $('kn').onclick=()=>{if(S.known[w])delete S.known[w];else S.known[w]=1;save('known');
   $('kn').textContent=S.known[w]?'حذف از کلمات بلد':'این را بلدم';paint()};
  const info={ipa:'',def:'',fa:''};
- Promise.all([tr(w,S.set.pw,sen),dict(w)]).then(([f,d])=>{
+ const showWord=(f,src)=>{$('wf').textContent=f?(src?`[${src}] `:'')+f:'ترجمه در دسترس نیست'};
+ Promise.all([srcTag(w,S.set.pw,sen),tr(w,S.set.pw,sen),dict(w)]).then(([src,f,d])=>{
   if(cw!==w)return;
   info.fa=f||'';
   if(d){info.ipa=d.ipa;info.def=d.pos+(d.pos?': ':'')+d.def}
-  $('wf').textContent=f||'ترجمه در دسترس نیست';
+  showWord(f,src);
   $('ipa').textContent=info.ipa;$('df').textContent=info.def;
   if(S.cards[w]){$('sw').textContent='ذخیره شده';$('sw').disabled=true;const c=S.cards[w];if(!c.fa&&f){c.fa=f;save('cards')}}
  });
+ /* Forced retranslation of the word in this sentence. Manual entries are kept. */
+ $('rw').onclick=async()=>{$('wf').textContent='...';const f=await tr(w,S.set.pw,sen,true);info.fa=f||info.fa;showWord(f,'اینترنت');
+  const c=S.cards[w];if(c&&!c.manual&&f){c.fa=f;save('cards')}};
  $('sw').onclick=()=>{if(!S.cards[w]){S.cards[w]=ensureCard({fa:info.fa,ipa:info.ipa,ex:sen,added:Date.now(),tags:[]});save('cards');snapHist();if(!info.fa)tr(w,S.set.pw,sen).then(f=>{const c=S.cards[w];if(f&&c&&!c.fa){c.fa=f;save('cards')}})}
   $('sw').textContent='ذخیره شد';$('sw').disabled=true;paint()}}
 function closeSh(){$('sh').classList.remove('on');document.body.classList.remove('shopen');document.querySelectorAll('.sel,.sel2').forEach(x=>x.classList.remove('sel','sel2'))}
@@ -417,33 +471,54 @@ function closeSh(){$('sh').classList.remove('on');document.body.classList.remove
 const sl=ms=>new Promise(r=>setTimeout(r,ms));
 let trTok=0;
 const pbv=()=>$('pb').value||S.set.pv;
-async function cachedAny(s,p){let x=await getTr(trKey(p,s));if(x||!S.set.fb)return x;for(const q in PV){if(q!==p){x=await getTr(trKey(q,s));if(x)return x}}return ''}
-function showT(n,x){const el=$('t'+n);if(el)el.textContent=x}
+function showT(n,x,src){const el=$('t'+n);if(el)el.textContent=x?(src?`[${src}] `:'')+x:''}
 async function showCached(){const p=pbv(),a=cur.p*PS,b=cur;
- for(let i=0;i<PS&&a+i<b.s.length;i++){const s=b.s[a+i],x=await cachedAny(s,p),cb=document.querySelector('.tk[data-n="'+(a+i)+'"]');if(x&&cb&&cur===b){cb.checked=true;showT(a+i,x)}}}
-async function trRun(ns){const tok=++trTok,p=pbv(),b=cur;ns=ns.filter(n=>n>=0&&n<b.s.length);
+ for(let i=0;i<PS&&a+i<b.s.length;i++){const rec=await getTr(tkey(p,b.s[a+i],'')),cb=document.querySelector('.tk[data-n="'+(a+i)+'"]');
+  if(rec&&cb&&cur===b){cb.checked=true;showT(a+i,rec.t,'ذخیره')}}}
+async function trRun(ns,force){const tok=++trTok,p=pbv(),b=cur;ns=ns.filter(n=>n>=0&&n<b.s.length);
  if(!ns.length){toast('جمله‌ای انتخاب نشده است.');return}
  const chars=ns.reduce((a,n)=>a+b.s[n].length,0);
  if(ns.length>3&&!confirm('ترجمهٔ '+ns.length+' جمله (حدود '+chars+' کاراکتر) با «'+PV[p].n+'»؟'))return;
  let done=0;trErr='';
  for(const n of ns){if(tok!==trTok||cur!==b)return;const cb=document.querySelector('.tk[data-n="'+n+'"]');if(cb)cb.checked=true;
   $('tp').textContent='در حال ترجمه '+(done+1)+' از '+ns.length;
-  const x=await tr(b.s[n],p);if(tok!==trTok)return;
+  const src=force?'اینترنت':await srcTag(b.s[n],p,'');
+  const x=await tr(b.s[n],p,'',force);if(tok!==trTok)return;
   if(!x){$('tp').textContent='';toast('ترجمه ناموفق: '+(trErr||'خطا'));return}
-  showT(n,x);done++;if(done<ns.length)await sl(500)}
+  showT(n,x,src);done++;if(done<ns.length)await sl(500)}
  $('tp').textContent='ترجمه شد: '+done+' جمله'}
 $('txt').onchange=async e=>{const cb=e.target.closest('.tk');if(!cb)return;const n=+cb.dataset.n;
  if(!cb.checked){showT(n,'');return}
- showT(n,'...');trErr='';const x=await tr(cur.s[n],pbv());
+ showT(n,'...');trErr='';const src=await srcTag(cur.s[n],pbv(),'');const x=await tr(cur.s[n],pbv());
  if(!cb.checked)return;
- if(x)showT(n,x);else{showT(n,'');cb.checked=false;toast('ترجمه ناموفق: '+(trErr||'خطا'))}};
+ if(x)showT(n,x,src);else{showT(n,'');cb.checked=false;toast('ترجمه ناموفق: '+(trErr||'خطا'))}};
 const clrT=()=>{trTok++;document.querySelectorAll('.tk').forEach(c=>c.checked=false);document.querySelectorAll('.tl').forEach(e=>e.textContent='')};
-$('ta').onclick=()=>{const a=cur.p*PS;trRun([...Array(PS).keys()].map(i=>a+i))};
+$('ta').onclick=()=>{const a=cur.p*PS;trRun([...Array(PS).keys()].map(i=>a+i),false)};
+$('tra').onclick=()=>{const a=cur.p*PS;trRun([...Array(PS).keys()].map(i=>a+i),true)};
 $('tx').onclick=clrT;
-$('trg').onclick=()=>{const a=cur.p*PS,f=Math.max(1,+$('rf').value||1),t=Math.min(PS,+$('rt2').value||f),o=[];for(let i=f;i<=t;i++)o.push(a+i-1);trRun(o)};
+$('trg').onclick=()=>{const a=cur.p*PS,f=Math.max(1,+$('rf').value||1),t=Math.min(PS,+$('rt2').value||f),o=[];for(let i=f;i<=t;i++)o.push(a+i-1);trRun(o,false)};
 $('pb').onchange=()=>{clrT();if(cur)showCached()};
 $('vbb').onclick=()=>{if(cur)vbox()};
-$('books').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]');if(o)openBook(o.dataset.o);if(d)delBook(d.dataset.d)};
+$('foc').onclick=()=>document.body.classList.toggle('focus');
+$('mkc').onclick=()=>makeCardsFromPage();
+$('rbk').onclick=async()=>{const a=await idbGet('kv','autobak');
+ if(!a){$('bmsg').textContent='نسخه‌ی خودکاری وجود ندارد.';return}
+ if(!confirm('کارت‌ها، آمار و پیشرفت به نسخه‌ی '+new Date(a.at).toLocaleString()+' برگردند؟'))return;
+ for(const k in a.kv){S[k]=a.kv[k];await saveNow(k)}
+ location.reload()};
+
+/* Offline download for a whole book: translates only sentences that are not saved yet, so it can be resumed */
+let offRun=false;
+async function offlineBook(id){const bk=books.find(b=>b.id===id);if(!bk)return;
+ if(offRun){toast('ذخیره آفلاین در حال انجام است');return}
+ offRun=true;const p=S.set.pv,el=$('ob_'+id);let done=0;
+ try{for(let i=0;i<bk.s.length;i++){
+   if(await getTr(tkey(p,bk.s[i],''))){done++;continue}
+   const x=await tr(bk.s[i],p);
+   if(!x){if(el)el.textContent='متوقف شد ('+done+' از '+bk.s.length+'). دوباره بزنید تا ادامه یابد.';return}
+   done++;if(el)el.textContent=`ذخیره شده: ${done} از ${bk.s.length}`;await sl(500)}
+  if(el)el.textContent=`کامل شد ✓ (${done} جمله)`;
+ }finally{offRun=false}}
 function provUI(){const ids=Object.keys(PV),opt=ids.map(i=>`<option value="${i}">${PV[i].n}</option>`).join('');
  for(const id of ['pvs','pws','pb'])$(id).innerHTML=opt;
  $('pvs').value=S.set.pv;$('pws').value=S.set.pw;$('pb').value=S.set.pv;$('fbk').checked=S.set.fb;
@@ -464,9 +539,9 @@ async function vbox(){const t=++vt,a=cur.p*PS,seen=[];
 
 /* ---------- spaced repetition (SM-2) ---------- */
 function schedule(c,g){const q={again:1,hard:3,good:4,easy:5}[g];const now=Date.now();
- const ef=q<3?Math.max(1.3,c.ef-0.2):Math.max(1.3,c.ef+0.1-(5-q)*(0.08+(5-q)*0.02));
+ const ef=Math.max(1.3,c.ef+0.1-(5-q)*(0.08+(5-q)*0.02));
  if(q<3)return{ef,reps:0,interval:0,due:now+10*60e3};
- const reps=c.reps+1;let iv=reps===1?1:reps===2?6:Math.round(c.interval*c.ef);
+ const reps=c.reps+1;let iv=reps===1?1:reps===2?6:Math.round(c.interval*ef);
  if(g==='hard')iv=Math.max(1,Math.round(iv*0.8));
  if(g==='easy')iv=Math.round(iv*1.3);
  return{ef,reps,interval:iv,due:now+iv*864e5}}
@@ -479,8 +554,8 @@ function review(w,g){const c=S.cards[w];if(!c)return;Object.assign(c,schedule(c,
 setInterval(()=>{if(document.hidden)return;const v=document.querySelector('.v.on');if(!v||v.id==='lib')return;
  const t=today();S.time[t]=(S.time[t]||0)+0.5;save('time');recordDay()},30000);
 
-// Reminder: checked every minute while the app is open or running in the background
-function notify(title,body){if(!navigator.serviceWorker){try{new Notification(title,{body})}catch(e){}return}try{Promise.race([navigator.serviceWorker.ready,new Promise((_,r)=>setTimeout(r,2000))]).then(reg=>reg.showNotification(title,{body,icon:'icon.svg',tag:'er'})).catch(()=>{try{new Notification(title,{body})}catch(e){}})}catch(e){}}
+// Reminder: checked every minute while the app is open
+function notify(title,body){try{navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icon.svg',tag:'er'})).catch(()=>{try{new Notification(title,{body})}catch(e){}})}catch(e){}}
 setInterval(()=>{if(!S.set.remt||!('Notification' in window)||Notification.permission!=='granted')return;
  const hm=new Date().toTimeString().slice(0,5);
  if(hm>=S.set.remt&&S.set.rn!==today()){const due=Object.keys(S.cards).filter(w=>S.cards[w].due<=Date.now()).length;
@@ -509,7 +584,7 @@ function reviewView(){
    <input data-f="ex" value="${esc(c.ex||'')}" placeholder="جمله">
    <input data-f="tags" value="${esc((c.tags||[]).join('، '))}" placeholder="برچسب‌ها با ویرگول (مثلاً: کاری، مکالمه)">
    <div class="row"><button class="p" data-sv="${esc(w)}">ذخیره تغییرات</button><button data-can="1">انصراف</button></div></div>`;
-  return `<div class="card row sp"><div><b>${esc(w)}</b> <span class="mut">${esc(c.ipa||'')}</span><div class="fa" style="font-size:16px">${esc(c.fa||'')}</div>
+  return `<div class="card row sp"><div><b>${esc(w)}</b> <span class="mut">${esc(c.ipa||'')}</span>${c.manual?' <span class="src">ویرایش‌شده</span>':''}<div class="fa" style="font-size:16px">${esc(c.fa||'')}</div>
    <div class="mut">تعداد مرور: ${c.reps} · بعدی: ${fmtDur(c.due-Date.now())}${(c.tags||[]).length?' · '+esc(c.tags.join('، ')):''}</div></div>
    <div class="row"><button data-ed="${esc(w)}">ویرایش</button><button data-rm="${esc(w)}">حذف</button></div></div>`}).join('')||'<p class="mut">هنگام خواندن روی یک کلمه بزنید و «ذخیره کلمه» را انتخاب کنید.</p>';
  $('mkl').innerHTML=S.marks.map((m,i)=>`<div class="card"><div style="direction:ltr;text-align:left">${esc(m.s)}</div><div class="mut">${esc(m.b||'')}</div>
@@ -531,12 +606,15 @@ function showAns(){const w=curW,c=S.cards[w];
 
 $('tags').onclick=e=>{const b=e.target.closest('[data-tag]');if(b){tagF=b.dataset.tag;reviewView()}};
 $('wl').onclick=e=>{const t=e.target;
- const rm=t.closest('[data-rm]');if(rm){if(!confirm('این کارت حذف شود؟'))return;delete S.cards[rm.dataset.rm];save('cards');reviewView();return}
+ const rm=t.closest('[data-rm]');if(rm){delete S.cards[rm.dataset.rm];save('cards');reviewView();return}
  const ed=t.closest('[data-ed]');if(ed){editW=ed.dataset.ed;reviewView();return}
  if(t.closest('[data-can]')){editW='';reviewView();return}
  const sv=t.closest('[data-sv]');if(sv){const box=sv.closest('[data-ew]'),w=sv.dataset.sv,c=S.cards[w];
-  c.fa=box.querySelector('[data-f=fa]').value.trim();c.ex=box.querySelector('[data-f=ex]').value.trim();
+  const oldFa=c.fa,newFa=box.querySelector('[data-f=fa]').value.trim();
+  c.fa=newFa;c.ex=box.querySelector('[data-f=ex]').value.trim();
   c.tags=box.querySelector('[data-f=tags]').value.split(/[,،]/).map(x=>x.trim()).filter(Boolean);
+  // A user-edited meaning is marked manual, so retranslation never overwrites it
+  if(newFa&&newFa!==oldFa){c.manual=true;setTr(tkey(S.set.pw,w,c.ex),{t:newFa,p:'manual',m:'',at:Date.now(),man:true})}
   editW='';save('cards');reviewView()}};
 $('mkl').onclick=e=>{const p=e.target.closest('[data-pl]'),r=e.target.closest('[data-mr]');
  if(p)speak(S.marks[+p.dataset.pl].s);
@@ -547,10 +625,6 @@ $('csv').onclick=()=>{const rows=Object.keys(S.cards).map(w=>[w,S.cards[w].fa,S.
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.join('\n')],{type:'text/csv'}));a.download='words.csv';a.click()};
 $('cp').onclick=()=>{const t=Object.keys(S.cards).map(w=>w+' - '+S.cards[w].fa).join('\n');
  navigator.clipboard.writeText(t).then(()=>{$('cp').textContent='کپی شد'},()=>{$('cp').textContent='کپی نشد'})};
-$('dla').onclick=async()=>{let n=0;
- for(const w of Object.keys(S.cards)){const d=await dict(w);
-  if(d&&d.audio&&!(await idbGet('audio',w))){try{const r=await fetch(d.audio);if(r.ok){await idbPut('audio',w,await r.blob());n++}}catch(e){}}}
- $('dla').textContent=n+' تلفظ ذخیره شد'};
 
 /* CSV / Anki import */
 function parseCSV(text){return text.split(/\r?\n/).filter(l=>l.trim()).map(l=>{const delim=l.includes('\t')?'\t':',';const out=[];let cur='',q=false;
@@ -611,10 +685,11 @@ function speaking(){const ws=Object.keys(S.cards);
  <audio id="sa" controls style="width:100%;margin-top:10px;display:none"></audio><div id="sres" style="margin-top:8px"></div></div>`;
  $('sl').onclick=()=>playWord(w);$('sn').onclick=()=>speaking();
  let mr=null,st=null;
+ const stopMic=()=>{if(st){st.getTracks().forEach(t=>t.stop());st=null}};
  $('sr').onclick=async()=>{if(mr&&mr.state==='recording'){mr.stop();return}
   try{st=await navigator.mediaDevices.getUserMedia({audio:true});const chunks=[];mr=new MediaRecorder(st);
    mr.ondataavailable=e=>chunks.push(e.data);
-   mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());const a=$('sa');a.src=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));a.style.display='block';$('sr').textContent='ضبط صدای من'};
+   mr.onstop=()=>{stopMic();const a=$('sa');a.src=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));a.style.display='block';$('sr').textContent='ضبط صدای من'};
    mr.start();$('sr').textContent='توقف'}
   catch(e){$('sres').textContent='میکروفون در دسترس نیست.'}};
  $('sc').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -625,7 +700,10 @@ function speaking(){const ws=Object.keys(S.cards);
    const ok=alts.some(t=>(' '+t+' ').includes(' '+w.toLowerCase()+' '));
    logEv('speak',ok,w);
    $('sres').innerHTML=`شنیده شد: <b style="direction:ltr">${esc(alts[0])}</b> — ${ok?'<span class="ok">درست ✓</span>':'<span class="bad">دوباره تلاش کنید</span>'}`};
-  r.onerror=e=>{$('sres').textContent='خطا: '+e.error};r.start()}}
+  r.onerror=e=>{$('sres').textContent='خطا: '+e.error};
+  r.onnomatch=()=>{$('sres').textContent='چیزی شنیده نشد. دوباره تلاش کنید.'};
+  r.onend=()=>{if($('sres').textContent==='در حال گوش دادن...')$('sres').textContent='چیزی شنیده نشد. دوباره تلاش کنید.'};
+  r.start()}}
 
 /* ---------- Stats ---------- */
 function histAt(d){let b=0,bk='';for(const k in S.hist)if(k<=d&&k>=bk){bk=k;b=S.hist[k]}return b}
@@ -685,29 +763,27 @@ $('lk').oninput=()=>{const w=$('lk').value.trim().toLowerCase();if(!w){$('lkr').
   ${S.notes[w]?`<div>یادداشت: ${esc(S.notes[w])}</div>`:''}</div>`};
 
 /* ---------- Backup ---------- */
-$('exp').onclick=async()=>{const kv={};for(const k of KEYS)kv[k]=S[k];kv.set={...S.set,pk:{}};
+$('exp').onclick=async()=>{await flushAll();S.set.lastBak=today();await saveNow('set');const kv={};for(const k of KEYS)kv[k]=S[k];kv.set={...S.set,pk:{}};
  const tr=await idbPairs('tr'),dict=await idbPairs('dict');
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'english-reader',v:5,books,kv,tr,dict})],{type:'application/json'}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'english-reader',v:6,books,kv,tr,dict})],{type:'application/json'}));
  a.download='english-reader-backup-'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),6e4)};
 $('imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;
  try{const d=JSON.parse(await f.text());if(d.app!=='english-reader')throw 0;
+  if(!Array.isArray(d.books)||!d.books.every(b=>b&&typeof b.id==='string'&&Array.isArray(b.s)))throw 0;
   if(!confirm('داده‌های فایل با داده‌های فعلی ادغام می‌شود. ادامه؟'))return;
+  await makeAutoSnap();
   for(const b of d.books)await idbPut('books',b.id,b);
   if(d.tr)await idbBulk('tr',d.tr);if(d.dict)await idbBulk('dict',d.dict);
   const o=d.kv||{};
-  for(const k of ['known','notes','wstats','hist'])if(o[k])S[k]=Object.assign(Object.create(null),S[k],o[k]);
-  if(o.prog)for(const b in o.prog)S.prog[b]=Math.max(S.prog[b]||0,o.prog[b]);
-  if(o.mist)for(const w in o.mist)S.mist[w]=Math.max(S.mist[w]||0,o.mist[w]);
-  if(o.time)for(const d in o.time)S.time[d]=Math.max(S.time[d]||0,o.time[d]);
-  if(o.cards)for(const w in o.cards){const a=S.cards[w],b=o.cards[w];if(!a){S.cards[w]=b;continue}
-   const nb=(b.last||0)>(a.last||0),n=nb?b:a,m=nb?a:b;
-   S.cards[w]=Object.assign({},m,n,{fa:n.fa||m.fa,ex:n.ex||m.ex,ipa:n.ipa||m.ipa,tags:[...new Set([...(m.tags||[]),...(n.tags||[])])]})}
+  for(const k of ['cards','known','mist','notes','wstats','prog','hist'])if(o[k])S[k]=Object.assign(Object.create(null),S[k],o[k]);
+  // time: keep the larger value per day instead of overwriting
+  if(o.time)for(const day in o.time)S.time[day]=Math.max(S.time[day]||0,o.time[day]);
   if(o.days)S.days=[...new Set([...S.days,...o.days])];
   if(o.seen)S.seen=[...new Set([...S.seen,...o.seen])];
   if(o.marks)S.marks=[...S.marks,...o.marks.filter(m=>!S.marks.some(x=>x.s===m.s))];
   if(o.log)S.log=[...S.log,...o.log].sort((a,b)=>a.t-b.t).slice(-3000);
   if(o.set)S.set={...S.set,...o.set,pk:S.set.pk};
-  for(const k of KEYS)await save(k);
+  for(const k of KEYS)await saveNow(k);
   location.reload()}
  catch(err){$('bmsg').textContent='این فایل پشتیبان معتبر نیست.'}};
 
@@ -718,7 +794,6 @@ function applySizes(){const r=document.documentElement.style;r.setProperty('--fe
  $('fev').textContent=S.set.fe;$('fpv').textContent=S.set.fp}
 function applyTheme(){const el=document.documentElement;if(S.set.th==='auto')el.removeAttribute('data-theme');else el.setAttribute('data-theme',S.set.th)}
 $('ft').onchange=()=>setFont($('ft').value);
-$('em').onchange=()=>{S.set.em=$('em').value.trim();save('set')};
 $('hc').onchange=()=>{S.set.hc=$('hc').checked;save('set');paint();if(cur&&$('rd').classList.contains('on'))vbox()};
 $('col').onchange=()=>{S.set.col=$('col').checked;save('set');document.body.classList.toggle('nocol',!S.set.col)};
 $('th').onchange=()=>{S.set.th=$('th').value;save('set');applyTheme()};
@@ -731,18 +806,24 @@ $('remb').onclick=async()=>{if(!('Notification' in window)){$('remm').textConten
  const p=await Notification.requestPermission();
  $('remm').textContent=p==='granted'?'یادآوری فعال شد. ساعت را در بالا تنظیم کرده‌اید.':'اجازه داده نشد. می‌توانید از تنظیمات مرورگر فعال کنید.'};
 $('tg').onchange=()=>$('txt').classList.toggle('hid',!$('tg').checked);
+$('pf').onchange=()=>{S.set.pf=$('pf').checked;save('set')};
+
+/* Library: book-level offline download (delegated from the book list) */
+$('books').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]'),ob=e.target.closest('[data-ob]');
+ if(o)openBook(o.dataset.o);if(d)delBook(d.dataset.d);if(ob)offlineBook(ob.dataset.ob)};
 
 /* ---------- start ---------- */
 (async()=>{
  try{await load()}catch(e){document.body.innerHTML='<p style="padding:20px">خطا در باز کردن حافظهٔ برنامه: '+esc(e.message||e)+'</p>';return}
  if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
  $('ft').value=S.set.ft;setFont(S.set.ft);
- $('em').value=S.set.em;$('hc').checked=S.set.hc;$('col').checked=S.set.col;
+$('hc').checked=S.set.hc;$('col').checked=S.set.col;
  $('th').value=S.set.th;$('fe').value=S.set.fe;$('fp').value=S.set.fp;
  $('gw').value=S.set.gw;$('gm').value=S.set.gm;$('remt').value=S.set.remt||'';
  document.body.classList.toggle('nocol',!S.set.col);
- applyTheme();applySizes();
+ applyTheme();applySizes();$('pf').checked=S.set.pf;
  lib();provUI();
+ if(books.length&&(!S.set.lastBak||(Date.now()-new Date(S.set.lastBak))>7*864e5))toast('چند روز است پشتیبان نگرفته‌اید. از بخش «پشتیبان‌گیری» در تنظیمات بگیرید.');
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script></body></html>
