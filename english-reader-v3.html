@@ -53,6 +53,7 @@ label{display:flex;align-items:center;gap:8px}
 @media(prefers-reduced-motion:reduce){#sh{transition:none}}
 body.shopen{padding-bottom:75vh}
 #toast{display:none;position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:9}
+.tk{width:20px;height:20px;margin:0 8px;vertical-align:middle}.rn{font-size:12px;color:var(--mut)}.pc{border:1px dashed var(--bd);padding:8px;border-radius:10px;margin:6px 0}
 </style></head><body>
 
 <section id="lib" class="v on">
@@ -72,7 +73,7 @@ body.shopen{padding-bottom:75vh}
 <div class="row"><label>هدف روزانه: کلمه <input id="gw" type="number" min="1" style="width:90px"></label><label>دقیقه <input id="gm" type="number" min="1" style="width:90px"></label></div>
 <div class="row"><label>یادآوری روزانه ساعت <input id="remt" type="time" style="width:auto"></label><button id="remb">فعال‌سازی</button></div>
 <p class="mut" id="remm">یادآوری فقط وقتی برنامه باز یا در پس‌زمینه فعال باشد ارسال می‌شود. برای یادآوری کامل حتی با بسته بودن برنامه، به سرور نیاز است.</p>
-<div class="row"><label>ترجمهٔ خودکار:</label><select id="atr" style="width:auto"><option value="page">صفحهٔ جاری و بعدی</option><option value="book">کل کتاب (مصرف زیاد سهمیه)</option><option value="off">خاموش (فقط با لمس)</option></select></div>
+<h2>مترجم‌ها</h2><div class="row"><label>مترجم جمله:</label><select id="pvs"></select></div><div class="row"><label>مترجم کلمه:</label><select id="pws"></select></div><label><input type="checkbox" id="fbk"> اگر مترجم خطا داد، مترجم‌های دیگر امتحان شوند</label><p class="mut">کلیدها فقط روی همین دستگاه ذخیره می‌شوند و در فایل پشتیبان نمی‌آیند. DeepL و بعضی سرویس‌ها از مرورگر مستقیم کار نمی‌کنند و به «پروکسی» نیاز دارند.</p><div id="pcfg"></div>
 <input id="em" type="email" placeholder="ایمیل (اختیاری؛ سقف روزانه ترجمه رایگان را بیشتر می‌کند)">
 <h2>فونت فارسی</h2>
 <select id="ft"><option value="a">دست‌نویس (Aref Ruqaa)</option><option value="k">دست‌نویس (Katibeh)</option><option value="n">نستعلیق</option><option value="c">فونت خودم (handwriting.ttf)</option><option value="d">پیش‌فرض</option></select>
@@ -86,9 +87,10 @@ body.shopen{padding-bottom:75vh}
 <section id="rd" class="v">
 <div class="row sp"><b id="rt"></b><span class="mut" id="rp"></span></div>
 <div class="bar"><i id="rb"></i></div>
+<div class="pc"><div class="row"><label>مترجم این صفحه:</label><select id="pb" style="width:auto"></select></div><div class="row"><button id="ta">ترجمهٔ کل صفحه</button><button id="tx">پاک‌کردن ترجمه‌ها</button></div><div class="row"><label>از جملهٔ <input id="rf" type="number" min="1" style="width:70px"></label><label>تا <input id="rt2" type="number" min="1" style="width:70px"></label><button id="trg">ترجمهٔ بازه</button></div><div class="mut">با تیک کنار هر جمله، فقط همان جمله ترجمه می‌شود.</div></div>
 <div class="row sp mut"><label><input type="checkbox" id="tg" checked> نمایش ترجمه</label><span id="tp"></span></div>
 <div id="txt" lang="en"></div>
-<div class="card" style="margin-top:12px"><b>کلمات کلیدی این صفحه</b><div id="vb"></div></div>
+<div class="card" style="margin-top:12px"><b>کلمات کلیدی این صفحه</b> <button id="vbb" class="ps">بارگذاری</button><div id="vb"></div></div>
 <div class="row sp" style="margin-top:14px"><button id="pv">صفحه قبل</button><button id="nx" class="p">صفحه بعد</button></div>
 </section>
 
@@ -155,7 +157,7 @@ const today=()=>fmt(new Date());
 const COMMON=new Set('the a an and or but if of to in on at by for with from as is are was were be been being it this that these those i you he she we they me him her us them my your his its our their not no yes do does did have has had will would can could should may might must so than then there here what which who whom whose when where why how all any some each every both more most other such only own same too very just also into over under about up down out off again once one like get got go going went come came make made say said see saw know knew think want its it\'s i\'m don\'t isn\'t that\'s there\'s let\'s'.split(' '));
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const DEF={cards:{},known:{},days:[],time:{},wstats:{},mist:{},seen:[],prog:{},log:[],hist:{},marks:[],notes:{},
- set:{em:'',ft:'a',hc:true,col:true,fe:19,fp:19,th:'auto',gw:20,gm:15,remt:'',rn:'',atr:'page',lb:''}};
+ set:{em:'',ft:'a',hc:true,col:true,fe:19,fp:19,th:'auto',gw:20,gm:15,remt:'',rn:'',atr:'page',lb:'',pv:'mm',pw:'mm',fb:false,pk:{}}};
 const KEYS=Object.keys(DEF);
 const S={};let books=[],cur=null,cw='',cs='',curW='',editW='',tagF='',vt=0,running=false;
 const mem=Object.create(null);const nrm=s=>s.toLowerCase().replace(/\u2019/g,"'");
@@ -231,7 +233,7 @@ function view(v){document.querySelectorAll('.v').forEach(e=>e.classList.toggle('
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='rd'&&!cur){if(books.length)openBook(books.find(x=>x.id===S.set.lb)?S.set.lb:books[0].id);else return}view(b.dataset.v)});
 
 function lib(){const h=books.map(b=>`<div class="card row sp"><div><b>${esc(b.title)}</b><div class="mut">${b.s.length} جمله</div></div>
-<div class="row"><button class="p" onclick="openBook('${b.id}')">خواندن</button><button onclick="delBook('${b.id}')">حذف</button></div></div>`).join('');
+<div class="row"><button class="p" data-o="${esc(b.id)}">خواندن</button><button data-d="${esc(b.id)}">حذف</button></div></div>`).join('');
  $('books').innerHTML=h||'<p class="mut">هنوز کتابی نیست. متن اول خود را پایین اضافه کنید.</p>'}
 function split(t){t=t.replace(/[\u2018\u2019\u02bc]/g,"'").replace(/\s+/g,' ').replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|Mt)\./g,'$1\u0001').replace(/(\d)\.(\d)/g,'$1\u0002$2');
  return (t.match(/[^.!?]+[.!?]*["')\u201d]*\s*/g)||[]).map(x=>x.replace(/[\u0001\u0002]/g,'.').trim()).filter(x=>x.length>1)}
@@ -241,7 +243,7 @@ $('add').onclick=async()=>{const t=$('bx').value.trim(),n=$('bt').value.trim()||
  if(t.length<20){$('msg').textContent='اول متن را وارد کنید یا فایلی انتخاب کنید.';return}
  const b={id:'b'+Date.now(),title:n,s:split(t),added:Date.now()};
  try{await idbPut('books',b.id,b)}catch(e){$('msg').textContent='حافظه پر است. اول یک کتاب را حذف کنید.';return}
- books.push(b);$('bx').value='';$('bt').value='';$('msg').textContent='ذخیره شد.';idx=null;lib();if(S.set.atr==='book')startTr(b)};
+ books.push(b);$('bx').value='';$('bt').value='';$('msg').textContent='ذخیره شد.';idx=null;lib()};
 
 function loadScript(url){if(!loadScript.cache)loadScript.cache={};
  return loadScript.cache[url]||(loadScript.cache[url]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=url;s.onload=res;s.onerror=()=>rej(new Error('برای بار اول به اینترنت نیاز است'));document.head.appendChild(s)}))}
@@ -251,16 +253,16 @@ async function readEpub(f){await loadScript(JSZIP_URL);const zip=await JSZip.loa
  const base=opfPath.includes('/')?opfPath.slice(0,opfPath.lastIndexOf('/')+1):'';
  const opf=new DOMParser().parseFromString(await zip.file(opfPath).async('string'),'application/xml');
  const items={};opf.querySelectorAll('manifest > item').forEach(i=>items[i.getAttribute('id')]=i.getAttribute('href'));
- const out=[];
+ const out=[],BL='p,h1,h2,h3,h4,h5,h6,li,blockquote',normP=p=>{const o=[];for(const x of p.split('/')){if(x==='..')o.pop();else if(x!=='.')o.push(x)}return o.join('/')};
  for(const ref of opf.querySelectorAll('spine > itemref')){const href=items[ref.getAttribute('idref')];if(!href)continue;
-  const name=base+href;let file=zip.file(name);
+  const name=normP(base+href.split('#')[0]);let file=zip.file(name);
   if(!file){try{file=zip.file(decodeURIComponent(name))}catch(e){}}
   if(!file)continue;
   const doc=new DOMParser().parseFromString(await file.async('string'),'text/html');
-  doc.querySelectorAll('p,h1,h2,h3,h4,h5,h6,li,blockquote').forEach(el=>{const t=el.textContent.replace(/\s+/g,' ').trim();if(t)out.push(t)})}
+  doc.querySelectorAll(BL).forEach(el=>{if(el.querySelector(BL))return;const t=el.textContent.replace(/\s+/g,' ').trim();if(t)out.push(t)})}
  return out.join('\n\n')}
 async function readPdf(f){await loadScript(PDFJS_URL);const lib=window.pdfjsLib;lib.GlobalWorkerOptions.workerSrc=PDFJS_WORKER;
- const doc=await lib.getDocument({data:await f.arrayBuffer()}).promise;const out=[];
+ const doc=await lib.getDocument({data:await f.arrayBuffer(),isEvalSupported:false}).promise;const out=[];
  for(let i=1;i<=doc.numPages;i++){const pg=await doc.getPage(i);const content=await pg.getTextContent();
   out.push(content.items.map(it=>it.str+(it.hasEOL?'\n':' ')).join(''))}
  return out.join('\n')}
@@ -272,7 +274,7 @@ $('bf').onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.na
  catch(err){$('msg').textContent='خواندن فایل ممکن نشد: '+err.message}};
 
 async function delBook(id){if(!confirm('این کتاب حذف شود؟'))return;const bk=books.find(b=>b.id===id);books=books.filter(b=>b.id!==id);trTok++;idx=null;await idbDel('books',id);
- if(bk)await idbDelMany('tr',bk.s);S.seen=S.seen.filter(k=>!k.startsWith(id+':'));save('seen');
+ if(bk)await idbDelMany('tr',bk.s.flatMap(x=>[x,...Object.keys(PV).map(p=>p+'|'+x)]));S.seen=S.seen.filter(k=>!k.startsWith(id+':'));save('seen');
  if(S.prog[id]!==undefined){delete S.prog[id];save('prog')}
  if(cur&&cur.id===id)cur=null;lib()}
 
@@ -280,14 +282,14 @@ async function delBook(id){if(!confirm('این کتاب حذف شود؟'))return
 function openBook(id){cur=books.find(b=>b.id===id);cur.p=S.prog[id]||0;S.set.lb=id;save('set');view('rd');page()}
 function page(){const a=cur.p*PS,tot=Math.ceil(cur.s.length/PS);let h='';
  cur.s.slice(a,a+PS).forEach((s,i)=>{const n=a+i;
-  const body=s.split(/([A-Za-z]+(?:['\u2019][A-Za-z]+)?)/).map((p,j)=>j%2?`<span class="w">${esc(p)}</span>`:esc(p)).join('');
-  h+=`<div class="sb"><span class="s" data-i="${n}">${body}</span><button class="ps" data-p="${n}">شنیدن</button><div class="fa tl" id="t${n}"></div></div>`});
+  const body=s.split(/([A-Za-z\u00C0-\u024F]+(?:['\u2019][A-Za-z\u00C0-\u024F]+)?)/).map((p,j)=>j%2?`<span class="w">${esc(p)}</span>`:esc(p)).join('');
+  h+=`<div class="sb"><span class="rn">${i+1}</span><input type="checkbox" class="tk" data-n="${n}" aria-label="ترجمه"><span class="s" data-i="${n}">${body}</span><button class="ps" data-p="${n}">شنیدن</button><div class="fa tl" id="t${n}"></div></div>`});
  $('txt').innerHTML=h;paint();
- cur.s.slice(a,a+PS).forEach((s,i)=>getTr(s).then(x=>{const el=$('t'+(a+i));if(x&&el)el.textContent=x}));
+ showCached();
  $('rt').textContent=cur.title;$('rp').textContent=(cur.p+1)+' / '+tot;$('rb').style.width=((cur.p+1)/tot*100)+'%';
  S.prog[cur.id]=cur.p;save('prog');
  $('pv').disabled=cur.p===0;$('nx').disabled=cur.p>=tot-1;$('txt').classList.toggle('hid',!$('tg').checked);
- logPage();vbox();startTr(cur);closeSh();window.scrollTo(0,0)}
+ logPage();trTok++;$('vb').innerHTML='';$('tp').textContent='';closeSh();window.scrollTo(0,0)}
 $('nx').onclick=()=>{cur.p++;page()};$('pv').onclick=()=>{cur.p--;page()};
 $('txt').onclick=e=>{const pb=e.target.closest('.ps');if(pb){speak(cur.s[+pb.dataset.p]);return}const s=e.target.closest('.s');if(!s)return;
  document.querySelectorAll('.sel,.sel2').forEach(x=>x.classList.remove('sel','sel2'));
@@ -323,17 +325,31 @@ async function playWord(w){const k=w.toLowerCase();const d=await dict(k);
    await new Audio(blob?URL.createObjectURL(blob):d.audio).play();return}catch(e){}}
  speak(w)}
 
-/* ---------- translation (cached offline) ---------- */
-async function trOne(t){const c=await getTr(t);if(c)return c;
- try{const r=await fetch('https://api.mymemory.translated.net/get?langpair=en|fa&q='+encodeURIComponent(t.slice(0,450))+(S.set.em?'&de='+encodeURIComponent(S.set.em):''));
-  const d=await r.json(),x=d.responseData&&d.responseData.translatedText;
-  if(!x||/MYMEMORY WARNING|QUERY LENGTH/i.test(x))return '';
-  await setTr(t,x);return x}catch(e){return ''}}
-function chunks(t){const out=[];let c='';for(const w of t.split(' ')){if((c+' '+w).trim().length>400){if(c.trim())out.push(c.trim());c=w}else c+=' '+w}if(c.trim())out.push(c.trim());return out}
-async function tr(t){const c=await getTr(t);if(c)return c;
- if(t.length<=400)return trOne(t);
- const parts=[];for(const p of chunks(t)){const x=await trOne(p);if(!x)return '';parts.push(x)}
- const x=parts.join(' ');await setTr(t,x);return x}
+/* ---------- translators ---------- */
+const dec=x=>{const t=document.createElement('textarea');t.innerHTML=x;return t.value.trim()};
+const cfg=id=>S.set.pk[id]||(S.set.pk[id]={});
+const LP=(t,c)=>c?`Translate this English word or phrase into Persian (Farsi) as used in the sentence. Reply only with 1-3 short Persian meanings separated by «، ».\nWord: ${t}\nSentence: ${c}`:`Translate the following English text into natural Persian (Farsi). Reply only with the translation.\n\n${t}`;
+async function J(url,opt){const r=await fetch(url,opt);if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+const px=(id,u)=>(cfg(id).proxy||'')+u,JH={'Content-Type':'application/json'};
+function chunks(t){const o=[];let c='';for(const w of t.split(' ')){if((c+' '+w).trim().length>400){if(c.trim())o.push(c.trim());c=w}else c+=' '+w}if(c.trim())o.push(c.trim());return o}
+const KP=['key','کلید API'],PP=['proxy','آدرس پروکسی (اختیاری)'],MP=['model','نام مدل (اختیاری)'],UP=['url','آدرس پایه'];
+const PV={
+ mm:{n:'MyMemory',f:[],ok:()=>true,run:async t=>{const one=async q=>{const d=await J('https://api.mymemory.translated.net/get?langpair=en|fa&q='+encodeURIComponent(q)+(S.set.em?'&de='+encodeURIComponent(S.set.em):''));const x=d.responseData&&d.responseData.translatedText;if(!x||/MYMEMORY WARNING|QUERY LENGTH/i.test(x))throw new Error('سقف روزانه یا خطا');return x};
+  if(t.length<=400)return one(t);const o=[];for(const p of chunks(t))o.push(await one(p));return o.join(' ')}},
+ google:{n:'Google Translate',f:[KP,PP],ok:()=>!!cfg('google').key,run:t=>J(px('google','https://translation.googleapis.com/language/translate/v2?key='+encodeURIComponent(cfg('google').key)),{method:'POST',headers:JH,body:JSON.stringify({q:t,source:'en',target:'fa',format:'text'})}).then(d=>d.data.translations[0].translatedText)},
+ deepl:{n:'DeepL',f:[KP,PP],ok:()=>!!cfg('deepl').key,run:t=>{const k=cfg('deepl').key;return J(px('deepl','https://api'+(k.endsWith(':fx')?'-free':'')+'.deepl.com/v2/translate'),{method:'POST',headers:{...JH,Authorization:'DeepL-Auth-Key '+k},body:JSON.stringify({text:[t],source_lang:'EN',target_lang:'FA'})}).then(d=>d.translations[0].text)}},
+ ms:{n:'Microsoft Translator',f:[KP,['region','منطقه (Region)'],PP],ok:()=>!!cfg('ms').key,run:t=>{const c=cfg('ms');return J(px('ms','https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=fa'),{method:'POST',headers:{...JH,'Ocp-Apim-Subscription-Key':c.key,...(c.region?{'Ocp-Apim-Subscription-Region':c.region}:{})},body:JSON.stringify([{Text:t}])}).then(d=>d[0].translations[0].text)}},
+ libre:{n:'LibreTranslate',f:[UP,KP,PP],ok:()=>!!cfg('libre').url,run:t=>{const c=cfg('libre');return J(px('libre',c.url.replace(/\/$/,'')+'/translate'),{method:'POST',headers:JH,body:JSON.stringify({q:t,source:'en',target:'fa',format:'text',api_key:c.key||undefined})}).then(d=>d.translatedText)}},
+ gemini:{n:'Gemini',f:[KP,MP],ok:()=>!!cfg('gemini').key,run:(t,x)=>{const c=cfg('gemini');return J('https://generativelanguage.googleapis.com/v1beta/models/'+(c.model||'gemini-2.0-flash')+':generateContent',{method:'POST',headers:{...JH,'x-goog-api-key':c.key},body:JSON.stringify({contents:[{parts:[{text:LP(t,x)}]}]})}).then(d=>d.candidates[0].content.parts[0].text)}},
+ openai:{n:'OpenAI / سازگار (OpenRouter، Ollama…)',f:[UP,KP,MP],ok:()=>{const c=cfg('openai');return !!(c.key||c.url)},run:(t,x)=>{const c=cfg('openai');return J((c.url||'https://api.openai.com/v1').replace(/\/$/,'')+'/chat/completions',{method:'POST',headers:{...JH,...(c.key?{Authorization:'Bearer '+c.key}:{})},body:JSON.stringify({model:c.model||'gpt-4o-mini',messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.choices[0].message.content)}},
+ claude:{n:'Claude',f:[KP,MP],ok:()=>!!cfg('claude').key,run:(t,x)=>{const c=cfg('claude');return J('https://api.anthropic.com/v1/messages',{method:'POST',headers:{...JH,'x-api-key':c.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:c.model||'claude-haiku-5-5',max_tokens:1000,messages:[{role:'user',content:LP(t,x)}]})}).then(d=>d.content[0].text)}},
+ chrome:{n:'Chrome (روی دستگاه)',f:[],ok:()=>'Translator' in self,run:async t=>{if(!PV.chrome.t)PV.chrome.t=await Translator.create({sourceLanguage:'en',targetLanguage:'fa'});return PV.chrome.t.translate(t)}}
+};
+let trErr='';
+async function trP(t,p,c){const k=p==='mm'?t:p+'|'+t,h=await getTr(k);if(h)return h;
+ try{const x=dec(await PV[p].run(t,c));if(x){await setTr(k,x);return x}}catch(e){trErr=PV[p].n+': '+(e.message||e)}return ''}
+async function tr(t,p,c){p=PV[p]?p:S.set.pv;let x=await trP(t,p,c);if(x||!S.set.fb)return x;
+ for(const q in PV){if(q===p||!PV[q].ok())continue;x=await trP(t,q,c);if(x)return x}return ''}
 
 /* ---------- similar word forms (rough stemming) ---------- */
 function stem(w){let s=w.toLowerCase();
@@ -365,7 +381,7 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
  $('mk').onclick=()=>{const i=S.marks.findIndex(m=>m.s===sen);
   if(i>=0)S.marks.splice(i,1);else S.marks.push({s:sen,b:cur?cur.title:''});
   save('marks');$('mk').textContent=i>=0?'نشانه‌گذاری جمله':'حذف نشانه'};
- $('ts').onclick=async()=>{$('sf').textContent='...';$('sf').textContent=(await tr(sen))||'ترجمه در دسترس نیست. اتصال را بررسی کنید یا بعداً امتحان کنید.'};
+ $('ts').onclick=async()=>{$('sf').textContent='...';$('sf').textContent=(await tr(sen,pbv()))||'ترجمه در دسترس نیست. اتصال را بررسی کنید یا بعداً امتحان کنید.'};
  if(!w)return;
  $('pw').onclick=()=>playWord(w);
  $('nt').oninput=()=>{const v=$('nt').value.trim();if(v)S.notes[w]=v;else delete S.notes[w];save('notes')};
@@ -374,7 +390,7 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
  $('kn').onclick=()=>{if(S.known[w])delete S.known[w];else S.known[w]=1;save('known');
   $('kn').textContent=S.known[w]?'حذف از کلمات بلد':'این را بلدم';paint()};
  const info={ipa:'',def:'',fa:''};
- Promise.all([tr(w),dict(w)]).then(([f,d])=>{
+ Promise.all([tr(w,S.set.pw,sen),dict(w)]).then(([f,d])=>{
   if(cw!==w)return;
   info.fa=f||'';
   if(d){info.ipa=d.ipa;info.def=d.pos+(d.pos?': ':'')+d.def}
@@ -382,29 +398,56 @@ function sheet(){const sh=$('sh'),w=cw,sen=cs;
   $('ipa').textContent=info.ipa;$('df').textContent=info.def;
   if(S.cards[w]){$('sw').textContent='ذخیره شده';$('sw').disabled=true;const c=S.cards[w];if(!c.fa&&f){c.fa=f;save('cards')}}
  });
- $('sw').onclick=()=>{if(!S.cards[w]){S.cards[w]=ensureCard({fa:info.fa,ipa:info.ipa,ex:sen,added:Date.now(),tags:[]});save('cards');snapHist();if(!info.fa)tr(w).then(f=>{const c=S.cards[w];if(f&&c&&!c.fa){c.fa=f;save('cards')}})}
+ $('sw').onclick=()=>{if(!S.cards[w]){S.cards[w]=ensureCard({fa:info.fa,ipa:info.ipa,ex:sen,added:Date.now(),tags:[]});save('cards');snapHist();if(!info.fa)tr(w,S.set.pw,sen).then(f=>{const c=S.cards[w];if(f&&c&&!c.fa){c.fa=f;save('cards')}})}
   $('sw').textContent='ذخیره شد';$('sw').disabled=true;paint()}}
 function closeSh(){$('sh').classList.remove('on');document.body.classList.remove('shopen');document.querySelectorAll('.sel,.sel2').forEach(x=>x.classList.remove('sel','sel2'))}
 
-/* ---------- background translation ---------- */
+/* ---------- on-demand translation ---------- */
 const sl=ms=>new Promise(r=>setTimeout(r,ms));
-let trTok=0,trBlock=0;
-async function startTr(b){const tok=++trTok,mode=S.set.atr;if(mode==='off'||Date.now()<trBlock)return;
- const a=(cur&&cur.id===b.id)?cur.p*PS:0,end=mode==='book'?b.s.length:Math.min(b.s.length,a+PS*2);let fails=0,done=0;
- for(let i=a;i<end;i++){if(tok!==trTok)return;const s=b.s[i];
-  if(await getTr(s)){done++;continue}
-  const x=await tr(s);if(tok!==trTok)return;
-  if(!x){if(++fails>=3){trBlock=Date.now()+6e5;$('tp').textContent='ترجمه متوقف شد: سقف روزانه یا نبود اینترنت.';return}i--;await sl(4000);continue}
-  fails=0;done++;
-  if(cur&&cur.id===b.id){const el=$('t'+i);if(el)el.textContent=x}
-  $('tp').textContent='ترجمه شد '+done+' از '+(end-a);await sl(600)}
- if(tok===trTok)$('tp').textContent='ترجمهٔ این بخش کامل است'}
+let trTok=0;
+const pbv=()=>$('pb').value||S.set.pv;
+function showT(n,x){const el=$('t'+n);if(el)el.textContent=x}
+async function showCached(){const p=pbv(),a=cur.p*PS,b=cur;
+ for(let i=0;i<PS&&a+i<b.s.length;i++){const s=b.s[a+i],x=await getTr(p==='mm'?s:p+'|'+s),cb=document.querySelector('.tk[data-n="'+(a+i)+'"]');if(x&&cb&&cur===b){cb.checked=true;showT(a+i,x)}}}
+async function trRun(ns){const tok=++trTok,p=pbv(),b=cur;ns=ns.filter(n=>n>=0&&n<b.s.length);
+ if(!ns.length){toast('جمله‌ای انتخاب نشده است.');return}
+ const chars=ns.reduce((a,n)=>a+b.s[n].length,0);
+ if(ns.length>3&&!confirm('ترجمهٔ '+ns.length+' جمله (حدود '+chars+' کاراکتر) با «'+PV[p].n+'»؟'))return;
+ let done=0;trErr='';
+ for(const n of ns){if(tok!==trTok||cur!==b)return;const cb=document.querySelector('.tk[data-n="'+n+'"]');if(cb)cb.checked=true;
+  $('tp').textContent='در حال ترجمه '+(done+1)+' از '+ns.length;
+  const x=await tr(b.s[n],p);if(tok!==trTok)return;
+  if(!x){$('tp').textContent='';toast('ترجمه ناموفق: '+(trErr||'خطا'));return}
+  showT(n,x);done++;if(done<ns.length)await sl(500)}
+ $('tp').textContent='ترجمه شد: '+done+' جمله'}
+$('txt').onchange=async e=>{const cb=e.target.closest('.tk');if(!cb)return;const n=+cb.dataset.n;
+ if(!cb.checked){showT(n,'');return}
+ showT(n,'...');trErr='';const x=await tr(cur.s[n],pbv());
+ if(!cb.checked)return;
+ if(x)showT(n,x);else{showT(n,'');cb.checked=false;toast('ترجمه ناموفق: '+(trErr||'خطا'))}};
+const clrT=()=>{trTok++;document.querySelectorAll('.tk').forEach(c=>c.checked=false);document.querySelectorAll('.tl').forEach(e=>e.textContent='')};
+$('ta').onclick=()=>{const a=cur.p*PS;trRun([...Array(PS).keys()].map(i=>a+i))};
+$('tx').onclick=clrT;
+$('trg').onclick=()=>{const a=cur.p*PS,f=Math.max(1,+$('rf').value||1),t=Math.min(PS,+$('rt2').value||f),o=[];for(let i=f;i<=t;i++)o.push(a+i-1);trRun(o)};
+$('pb').onchange=()=>{clrT();if(cur)showCached()};
+$('vbb').onclick=()=>{if(cur)vbox()};
+$('books').onclick=e=>{const o=e.target.closest('[data-o]'),d=e.target.closest('[data-d]');if(o)openBook(o.dataset.o);if(d)delBook(d.dataset.d)};
+function provUI(){const ids=Object.keys(PV),opt=ids.map(i=>`<option value="${i}">${PV[i].n}</option>`).join('');
+ for(const id of ['pvs','pws','pb'])$(id).innerHTML=opt;
+ $('pvs').value=S.set.pv;$('pws').value=S.set.pw;$('pb').value=S.set.pv;$('fbk').checked=S.set.fb;
+ $('pcfg').innerHTML=ids.filter(i=>PV[i].f.length).map(i=>`<div class="card"><b>${esc(PV[i].n)}</b>${PV[i].f.map(([f,l])=>`<input data-p="${i}" data-f="${f}" placeholder="${esc(l)}" value="${esc(cfg(i)[f]||'')}"${f==='key'?' type="password" autocomplete="off"':''}>`).join('')}<div class="row"><button data-t="${i}">آزمایش اتصال</button><span class="mut" id="pt_${i}"></span></div></div>`).join('')}
+$('pvs').onchange=()=>{S.set.pv=$('pvs').value;save('set');$('pb').value=S.set.pv;$('pb').onchange()};
+$('pws').onchange=()=>{S.set.pw=$('pws').value;save('set')};
+$('fbk').onchange=()=>{S.set.fb=$('fbk').checked;save('set')};
+$('pcfg').oninput=e=>{const i=e.target.dataset.p;if(i){cfg(i)[e.target.dataset.f]=e.target.value.trim();save('set')}};
+$('pcfg').onclick=async e=>{const i=e.target.dataset.t;if(!i)return;const o=$('pt_'+i);o.textContent='...';
+ try{o.textContent='✓ '+dec(await PV[i].run('Hello, how are you?'))}catch(err){o.textContent='✗ '+(err.message||err)}};
 
 /* Key words box: words on this page with translation and pronunciation */
 async function vbox(){const t=++vt,a=cur.p*PS,seen=[];
  (cur.s.slice(a,a+PS).join(' ').toLowerCase().replace(/\u2019/g,"'").match(/[a-z]{6,}/g)||[]).forEach(w=>{if(!seen.includes(w)&&!isKnownW(w))seen.push(w)});
  const L=seen.slice(0,12);$('vb').innerHTML=L.map(w=>`<div class="r" id="v_${w}"><b>${w}</b><span class="mut">...</span></div>`).join('');
- for(const w of L){if(t!==vt)return;const [f,d]=await Promise.all([tr(w),dict(w)]);if(t!==vt)return;
+ for(const w of L){if(t!==vt)return;const [f,d]=await Promise.all([tr(w,S.set.pw),dict(w)]);if(t!==vt)return;
   const el=$('v_'+w);if(el)el.innerHTML=`<span><b>${esc(w)}</b> <span class="mut">${esc((d&&d.ipa)||'')}</span></span><span class="fa" style="font-size:16px">${esc(f||'')}</span>`;await sl(350)}}
 
 /* ---------- spaced repetition (SM-2) ---------- */
@@ -567,7 +610,7 @@ function speaking(){const ws=Object.keys(S.cards);
   const r=new SR();r.lang='en-US';r.interimResults=false;r.maxAlternatives=3;
   $('sres').textContent='در حال گوش دادن...';
   r.onresult=e=>{const alts=[...e.results[0]].map(x=>x.transcript.toLowerCase().trim());
-   const ok=alts.some(t=>t.split(/\s+/).includes(w.toLowerCase()));
+   const ok=alts.some(t=>(' '+t+' ').includes(' '+w.toLowerCase()+' '));
    logEv('speak',ok,w);
    $('sres').innerHTML=`شنیده شد: <b style="direction:ltr">${esc(alts[0])}</b> — ${ok?'<span class="ok">درست ✓</span>':'<span class="bad">دوباره تلاش کنید</span>'}`};
   r.onerror=e=>{$('sres').textContent='خطا: '+e.error};r.start()}}
@@ -630,15 +673,23 @@ $('lk').oninput=()=>{const w=$('lk').value.trim().toLowerCase();if(!w){$('lkr').
   ${S.notes[w]?`<div>یادداشت: ${esc(S.notes[w])}</div>`:''}</div>`};
 
 /* ---------- Backup ---------- */
-$('exp').onclick=async()=>{const kv={};for(const k of KEYS)kv[k]=S[k];
+$('exp').onclick=async()=>{const kv={};for(const k of KEYS)kv[k]=S[k];kv.set={...S.set,pk:{}};
  const tr=await idbPairs('tr'),dict=await idbPairs('dict');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'english-reader',v:5,books,kv,tr,dict})],{type:'application/json'}));
  a.download='english-reader-backup-'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),6e4)};
 $('imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;
- try{const d=JSON.parse(await f.text());if(d.app!=='english-reader')throw new Error('not a backup');
+ try{const d=JSON.parse(await f.text());if(d.app!=='english-reader')throw 0;
+  if(!confirm('داده‌های فایل با داده‌های فعلی ادغام می‌شود. ادامه؟'))return;
   for(const b of d.books)await idbPut('books',b.id,b);
   if(d.tr)await idbBulk('tr',d.tr);if(d.dict)await idbBulk('dict',d.dict);
-  for(const k of KEYS)if(d.kv[k]!==undefined){S[k]=d.kv[k];await save(k)}
+  const o=d.kv||{};
+  for(const k of ['cards','known','mist','notes','wstats','prog','time','hist'])if(o[k])S[k]=Object.assign(Object.create(null),S[k],o[k]);
+  if(o.days)S.days=[...new Set([...S.days,...o.days])];
+  if(o.seen)S.seen=[...new Set([...S.seen,...o.seen])];
+  if(o.marks)S.marks=[...S.marks,...o.marks.filter(m=>!S.marks.some(x=>x.s===m.s))];
+  if(o.log)S.log=[...S.log,...o.log].sort((a,b)=>a.t-b.t).slice(-3000);
+  if(o.set)S.set={...S.set,...o.set,pk:S.set.pk};
+  for(const k of KEYS)await save(k);
   location.reload()}
  catch(err){$('bmsg').textContent='این فایل پشتیبان معتبر نیست.'}};
 
@@ -661,7 +712,6 @@ $('remt').onchange=()=>{S.set.remt=$('remt').value;save('set')};
 $('remb').onclick=async()=>{if(!('Notification' in window)){$('remm').textContent='این مرورگر یادآوری را پشتیبانی نمی‌کند.';return}
  const p=await Notification.requestPermission();
  $('remm').textContent=p==='granted'?'یادآوری فعال شد. ساعت را در بالا تنظیم کرده‌اید.':'اجازه داده نشد. می‌توانید از تنظیمات مرورگر فعال کنید.'};
-$('atr').onchange=()=>{S.set.atr=$('atr').value;save('set');if(cur)startTr(cur)};
 $('tg').onchange=()=>$('txt').classList.toggle('hid',!$('tg').checked);
 
 /* ---------- start ---------- */
@@ -671,10 +721,10 @@ $('tg').onchange=()=>$('txt').classList.toggle('hid',!$('tg').checked);
  $('ft').value=S.set.ft;setFont(S.set.ft);
  $('em').value=S.set.em;$('hc').checked=S.set.hc;$('col').checked=S.set.col;
  $('th').value=S.set.th;$('fe').value=S.set.fe;$('fp').value=S.set.fp;
- $('atr').value=S.set.atr;$('gw').value=S.set.gw;$('gm').value=S.set.gm;$('remt').value=S.set.remt||'';
+ $('gw').value=S.set.gw;$('gm').value=S.set.gm;$('remt').value=S.set.remt||'';
  document.body.classList.toggle('nocol',!S.set.col);
  applyTheme();applySizes();
- lib();
+ lib();provUI();
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script></body></html>
