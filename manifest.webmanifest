@@ -1,0 +1,13 @@
+{
+  "name": "English Reader",
+  "short_name": "EnReader",
+  "start_url": "./english-reader-v3.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f6fa",
+  "theme_color": "#0f5f7a",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
