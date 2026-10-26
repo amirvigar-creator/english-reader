@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="fa"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f5f7a">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>English Reader</title>
+<title>کتابخوان انگلیسی</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Katibeh&family=Noto+Nastaliq+Urdu&display=swap">
 <style>
-:root{--bg:#f3f6fa;--fg:#17202e;--mut:#667085;--ac:#0f5f7a;--on:#fff;--card:#fff;--bd:#d9e0ea;--hl:#d6ecf5;--fa:#0a4d94;--ok:#1a7f37;--bad:#c62828;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
-@media(prefers-color-scheme:dark){:root{--bg:#0f141b;--fg:#e4e9f1;--mut:#97a1b3;--ac:#5cc0e0;--on:#06222d;--card:#18202b;--bd:#2a3442;--hl:#1d3a48;--fa:#8fc1ff;--ok:#5fd27f;--bad:#ff8a80}}
+:root{--bg:#f3f6fa;--fg:#17202e;--mut:#667085;--ac:#0f5f7a;--on:#fff;--card:#fff;--bd:#d9e0ea;--hl:#d6ecf5;--fa:#0a4d94;--ok:#1a7f37;--bad:#c62828;--blue:#bfe0ff;--yel:#fff0a0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f141b;--fg:#e4e9f1;--mut:#97a1b3;--ac:#5cc0e0;--on:#06222d;--card:#18202b;--bd:#2a3442;--hl:#1d3a48;--fa:#8fc1ff;--ok:#5fd27f;--bad:#ff8a80;--blue:#1f4a78;--yel:#6b5d10}}
+:root[data-theme=dark]{--bg:#0f141b;--fg:#e4e9f1;--mut:#97a1b3;--ac:#5cc0e0;--on:#06222d;--card:#18202b;--bd:#2a3442;--hl:#1d3a48;--fa:#8fc1ff;--ok:#5fd27f;--bad:#ff8a80;--blue:#1f4a78;--yel:#6b5d10}
 *{box-sizing:inherit}
-html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Roboto,sans-serif}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Vazirmatn,Tahoma,system-ui,-apple-system,Roboto,sans-serif}
 body{padding:0 14px calc(76px + env(safe-area-inset-bottom,0px))}
 h1{font-size:22px;margin:16px 0 10px}h2{font-size:17px;margin:18px 0 8px}
 button,input,textarea,select{font:inherit;color:inherit}
@@ -20,91 +21,123 @@ button:disabled{opacity:.5;cursor:default}
 button.p{background:var(--ac);color:var(--on);border-color:var(--ac)}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 input,textarea{width:100%;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:4px 0}
+input[type=checkbox],input[type=range],input[type=number]{width:auto}
 textarea{min-height:110px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:8px 0}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.sp{justify-content:space-between}
 .mut{color:var(--mut);font-size:14px}@font-face{font-family:Custom;src:url('handwriting.ttf')}
 select{width:100%;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:4px 0}
-.fa{direction:rtl;text-align:right;color:var(--fa);font-size:19px;line-height:var(--lh,1.8);font-family:var(--ff,system-ui)}
+.fa{direction:rtl;text-align:right;color:var(--fa);font-size:var(--fasz,19px);line-height:var(--lh,1.8);font-family:var(--ff,system-ui)}
 .v{display:none}.v.on{display:block}
 nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px)}
 nav button{flex:1;border:0;border-radius:0;background:none;padding:12px 2px;color:var(--mut);font-size:12px}
 nav button.on{color:var(--ac);font-weight:700;box-shadow:inset 0 3px var(--ac)}
-#txt{font:19px/1.9 Georgia,"Times New Roman",serif;max-width:68ch}
+#txt{font-family:Georgia,"Times New Roman",serif;font-size:var(--fesz,19px);line-height:1.9;max-width:68ch;direction:ltr;text-align:left}
 .w{border-radius:4px}.w:active,.w.sel{background:var(--hl)}
 .w.kn{color:var(--mut)}.w.kn:active,.w.kn.sel{background:none}
+.w.nw{background:var(--blue)}.w.lr{background:var(--yel)}
+body.nocol .w.nw,body.nocol .w.lr{background:none}
 .s.sel2{background:color-mix(in srgb,var(--hl) 45%,transparent)}
-#sh{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--ac);border-radius:16px 16px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom,0px));max-height:62vh;overflow:auto;transform:translateY(105%);transition:transform .2s;z-index:5}
+#sh{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--ac);border-radius:16px 16px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom,0px));max-height:70vh;overflow:auto;transform:translateY(105%);transition:transform .2s;z-index:5}
 #sh.on{transform:none}
 .big{font-size:24px;font-weight:700}
 .bar{height:6px;background:var(--bd);border-radius:3px;margin:6px 0}.bar i{display:block;height:100%;background:var(--ac);border-radius:3px}
 .chart{display:flex;align-items:flex-end;gap:3px;height:110px;margin-top:6px}.chart div{flex:1;background:var(--ac);border-radius:3px 3px 0 0;min-height:2px}
-.sb{margin:0 0 12px}.tl{font-size:19px}.hid .tl{display:none}.ps{padding:2px 9px;font-size:13px;margin-inline-start:6px;vertical-align:middle}
+.sb{margin:0 0 12px}.tl{font-size:var(--fasz,19px)}.hid .tl{display:none}.ps{padding:2px 9px;font-size:13px;margin-inline-start:6px;vertical-align:middle}
 .r{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--bd);padding:6px 0}
 .opt{display:block;width:100%;text-align:right;margin:6px 0;font-size:18px;padding:12px;direction:rtl}
 .ok{color:var(--ok)}.bad{color:var(--bad)}
+.chip{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:4px 10px;margin:3px;font-size:14px}
+.chip.ok{color:var(--ok);border-color:var(--ok)}
+label{display:flex;align-items:center;gap:8px}
 @media(prefers-reduced-motion:reduce){#sh{transition:none}}
 </style></head><body>
 
 <section id="lib" class="v on">
-<h1>Library</h1>
+<h1>کتابخانه</h1>
 <div id="books"></div>
-<h2>Add a book</h2>
-<input id="bt" placeholder="Title">
-<textarea id="bx" placeholder="Paste English text here, or choose a .txt, .epub or .pdf file"></textarea>
-<div class="row"><input id="bf" type="file" accept=".txt,.epub,.pdf,text/plain,application/epub+zip,application/pdf" style="flex:1"><button class="p" id="add">Save book</button></div>
+<h2>افزودن کتاب</h2>
+<input id="bt" placeholder="عنوان کتاب">
+<textarea id="bx" placeholder="متن انگلیسی را اینجا وارد کنید، یا فایل .txt / .epub / .pdf انتخاب کنید"></textarea>
+<div class="row"><input id="bf" type="file" accept=".txt,.epub,.pdf,text/plain,application/epub+zip,application/pdf" style="flex:1"><button class="p" id="add">ذخیره کتاب</button></div>
 <p class="mut" id="msg"></p>
-<h2>Settings</h2>
-<label class="row"><input type="checkbox" id="hc" style="width:auto"> Dim very common words</label>
-<input id="em" type="email" placeholder="Email (optional, raises the free daily translation limit)">
-<h2>Persian font</h2>
-<select id="ft"><option value="a">Handwriting (Aref Ruqaa)</option><option value="k">Handwriting (Katibeh)</option><option value="n">Nastaliq</option><option value="c">My own font (handwriting.ttf)</option><option value="d">Default</option></select>
+<h2>تنظیمات</h2>
+<label><input type="checkbox" id="hc"> کم‌رنگ کردن کلمات بسیار رایج</label>
+<label><input type="checkbox" id="col"> رنگی کردن کلمات (آبی: جدید، زرد: در حال یادگیری)</label>
+<div class="row"><label>قالب:</label><select id="th" style="width:auto"><option value="auto">خودکار</option><option value="light">روشن</option><option value="dark">تاریک</option></select></div>
+<div class="row"><label style="flex:1">اندازه متن انگلیسی: <span id="fev"></span></label><input type="range" id="fe" min="14" max="28" style="flex:1"></div>
+<div class="row"><label style="flex:1">اندازه متن فارسی: <span id="fpv"></span></label><input type="range" id="fp" min="14" max="28" style="flex:1"></div>
+<div class="row"><label>هدف روزانه: کلمه <input id="gw" type="number" min="1" style="width:90px"></label><label>دقیقه <input id="gm" type="number" min="1" style="width:90px"></label></div>
+<div class="row"><label>یادآوری روزانه ساعت <input id="remt" type="time" style="width:auto"></label><button id="remb">فعال‌سازی</button></div>
+<p class="mut" id="remm">یادآوری فقط وقتی برنامه باز یا در پس‌زمینه فعال باشد ارسال می‌شود. برای یادآوری کامل حتی با بسته بودن برنامه، به سرور نیاز است.</p>
+<input id="em" type="email" placeholder="ایمیل (اختیاری؛ سقف روزانه ترجمه رایگان را بیشتر می‌کند)">
+<h2>فونت فارسی</h2>
+<select id="ft"><option value="a">دست‌نویس (Aref Ruqaa)</option><option value="k">دست‌نویس (Katibeh)</option><option value="n">نستعلیق</option><option value="c">فونت خودم (handwriting.ttf)</option><option value="d">پیش‌فرض</option></select>
 <div class="fa" style="margin-top:8px">این یک نمونه متن فارسی است</div>
-<h2>Backup and move to another phone</h2>
-<p class="mut">Export saves everything (books, cards, progress, stats) as one file. Import it on the other phone.</p>
-<div class="row"><button id="exp">Export backup</button><label class="row" style="flex:1"><input id="imp" type="file" accept=".json,application/json"></label></div>
+<h2>پشتیبان‌گیری و انتقال به گوشی دیگر</h2>
+<p class="mut">خروجی، همه چیز (کتاب‌ها، کارت‌ها، پیشرفت و آمار) را در یک فایل ذخیره می‌کند. آن را در گوشی دیگر وارد کنید.</p>
+<div class="row"><button id="exp">ذخیره پشتیبان</button><label style="flex:1"><input id="imp" type="file" accept=".json,application/json"></label></div>
 <p class="mut" id="bmsg"></p>
 </section>
 
 <section id="rd" class="v">
 <div class="row sp"><b id="rt"></b><span class="mut" id="rp"></span></div>
 <div class="bar"><i id="rb"></i></div>
-<div class="row sp mut"><label><input type="checkbox" id="tg" checked style="width:auto"> Show translation</label><span id="tp"></span></div>
+<div class="row sp mut"><label><input type="checkbox" id="tg" checked> نمایش ترجمه</label><span id="tp"></span></div>
 <div id="txt"></div>
-<div class="card" style="margin-top:12px"><b>Key words on this page</b><div id="vb"></div></div>
-<div class="row sp" style="margin-top:14px"><button id="pv">Previous</button><button id="nx" class="p">Next page</button></div>
+<div class="card" style="margin-top:12px"><b>کلمات کلیدی این صفحه</b><div id="vb"></div></div>
+<div class="row sp" style="margin-top:14px"><button id="pv">صفحه قبل</button><button id="nx" class="p">صفحه بعد</button></div>
 </section>
 
 <section id="cd" class="v">
-<h1>Review</h1>
+<h1>مرور</h1>
+<div id="tags"></div>
 <div id="rv"></div>
-<h2>Saved words</h2>
-<div class="row"><button id="csv">Download CSV (Anki)</button><button id="cp">Copy list</button><button id="dla">Save pronunciations offline</button></div>
+<h2>کلمات ذخیره‌شده</h2>
+<div class="row"><button id="csv">دانلود CSV (برای Anki)</button><button id="cp">کپی فهرست</button><button id="dla">ذخیره تلفظ‌ها برای آفلاین</button></div>
 <div id="wl"></div>
+<h2>ورود از Anki یا فایل CSV</h2>
+<p class="mut">فایل CSV با ستون اول «کلمه» و ستون دوم «معنی فارسی» (اختیاری: ستون سوم تلفظ، ستون چهارم جمله). کلمات تکراری نادیده گرفته می‌شوند.</p>
+<input id="ankif" type="file" accept=".csv,.txt,text/csv,text/plain">
+<p class="mut" id="ankm"></p>
+<h2>جمله‌های نشانه‌دار</h2>
+<div id="mkl"></div>
+<h2>کلمات بلد (<span id="kcount">0</span>)</h2>
+<div id="kl"></div>
 </section>
 
 <section id="pr" class="v">
-<h1>Practice</h1>
-<div class="row"><button id="m1" class="p">Quiz</button><button id="m2">Dictation</button><button id="m3">Speaking</button></div>
+<h1>تمرین</h1>
+<div class="row"><button id="m1" class="p">آزمون</button><button id="m2">دیکته</button><button id="m3">تلفظ</button></div>
 <div id="pz"></div>
 </section>
 
 <section id="st" class="v">
-<h1>Stats</h1>
+<h1>آمار</h1>
+<h2>هدف امروز</h2>
+<div id="goal"></div>
 <div id="sum"></div>
-<h2>Minutes studied (last 14 days)</h2>
+<h2>گزارش هفتگی</h2>
+<div id="week"></div>
+<h2>دستاوردها</h2>
+<div id="badges"></div>
+<h2>کلمات یادگرفته‌شده (۳۰ روز اخیر)</h2>
+<div id="lchart" class="chart"></div>
+<h2>دقیقه‌های مطالعه (۱۴ روز اخیر)</h2>
 <div id="chart" class="chart"></div>
-<h2>Most mistaken words</h2>
+<h2>تحلیل خطاها بر اساس نوع تمرین</h2>
+<div id="errs"></div>
+<h2>پرخطاترین کلمات</h2>
 <div id="mist"></div>
-<h2>Frequent words in your books</h2>
+<h2>کلمات پرتکرار در کتاب‌های شما</h2>
 <div id="freq"></div>
-<h2>Word lookup</h2>
-<input id="lk" placeholder="Type a word">
+<h2>جستجوی کلمه</h2>
+<input id="lk" placeholder="کلمه را تایپ کنید">
 <div id="lkr"></div>
 </section>
 
 <div id="sh"></div>
-<nav><button data-v="lib" class="on">Library</button><button data-v="rd">Reader</button><button data-v="cd">Review</button><button data-v="pr">Practice</button><button data-v="st">Stats</button></nav>
+<nav><button data-v="lib" class="on">کتابخانه</button><button data-v="rd">خواندن</button><button data-v="cd">مرور</button><button data-v="pr">تمرین</button><button data-v="st">آمار</button></nav>
 
 <script>
 const $=id=>document.getElementById(id),PS=20,IV=[0,1,3,7,14,30];
@@ -114,14 +147,14 @@ const PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.w
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const escRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const wordRe=w=>new RegExp('\\b('+escRe(w)+')\\b','i');
-const fmt=d=>d.toLocaleDateString('en-CA');           // local YYYY-MM-DD
+const fmt=d=>d.toLocaleDateString('en-CA');
 const today=()=>fmt(new Date());
 const COMMON=new Set('the a an and or but if of to in on at by for with from as is are was were be been being it this that these those i you he she we they me him her us them my your his its our their not no yes do does did have has had will would can could should may might must so than then there here what which who whom whose when where why how all any some each every both more most other such only own same too very just also into over under about up down out off again once one like get got go going went come came make made say said see saw know knew think want its it\'s i\'m don\'t isn\'t that\'s there\'s let\'s'.split(' '));
-const dimOf=w=>!!S.known[w]||(S.set.hc&&COMMON.has(w));
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
-const KEYS=['cards','known','days','time','wstats','mist','seen','prog','set'];
-const DEF={cards:{},known:{},days:[],time:{},wstats:{},mist:{},seen:[],prog:{},set:{em:'',ft:'a',hc:true}};
-const S={};let books=[],cur=null,cw='',cs='',curW='',vt=0,running=false;
+const DEF={cards:{},known:{},days:[],time:{},wstats:{},mist:{},seen:[],prog:{},log:[],hist:{},marks:[],notes:{},
+ set:{em:'',ft:'a',hc:true,col:true,fe:19,fp:19,th:'auto',gw:20,gm:15,remt:'',rn:''}};
+const KEYS=Object.keys(DEF);
+const S={};let books=[],cur=null,cw='',cs='',curW='',editW='',tagF='',vt=0,running=false;
 const mem={};
 
 /* ---------- IndexedDB storage ---------- */
@@ -139,16 +172,17 @@ async function getTr(t){if(mem[t])return mem[t];const v=await idbGet('tr',t);if(
 async function setTr(t,v){mem[t]=v;await idbPut('tr',t,v).catch(()=>{})}
 
 function ensureCard(c){if(c.ef===undefined){c.ef=2.5;c.reps=c.box>0?c.box:0;c.interval=IV[c.box||0]||0;c.last=0}
- if(c.due===undefined)c.due=0;return c}
+ if(c.due===undefined)c.due=0;if(!c.tags)c.tags=[];if(!c.added)c.added=Date.now();return c}
 
 async function load(){
  for(const k of KEYS){const v=await idbGet('kv',k);S[k]=v??structuredClone(DEF[k])}
+ S.set={...DEF.set,...S.set};
  books=await idbAll('books');
  await migrateOld();
  Object.values(S.cards).forEach(ensureCard);
 }
 
-/* One-time import of data from the earlier localStorage version */
+/* One-time import of data from the first localStorage version */
 async function migrateOld(){
  if(localStorage.getItem('migrated3'))return;
  for(const b of lsGet('books',[])){if(!books.find(x=>x.id===b.id)){const nb={id:b.id,title:b.title,s:b.s,added:Date.now()};books.push(nb);await idbPut('books',nb.id,nb)}}
@@ -163,6 +197,23 @@ async function migrateOld(){
  localStorage.setItem('migrated3','1');
 }
 
+/* ---------- word status and colours ---------- */
+// known = bold-free, dimmed | new = blue (not saved yet) | learn = yellow (saved, interval < 21 days)
+function wstatus(w){if(S.known[w]||(S.set.hc&&COMMON.has(w)))return 'known';
+ const c=S.cards[w];if(!c)return 'new';return c.interval>=21?'known':'learn'}
+const isKnownW=w=>wstatus(w)==='known';
+function paint(){document.querySelectorAll('#txt .w').forEach(el=>{const st=wstatus(el.textContent.toLowerCase());
+ el.classList.toggle('kn',st==='known');el.classList.toggle('nw',st==='new');el.classList.toggle('lr',st==='learn')})}
+
+/* ---------- learning data ---------- */
+function learnedCount(){return Object.values(S.cards).filter(c=>c.interval>=21).length}
+function snapHist(){S.hist[today()]=learnedCount();save('hist')}
+function logEv(type,ok,w){S.log.push({t:Date.now(),k:type,ok,w});if(S.log.length>3000)S.log.splice(0,S.log.length-3000);save('log')}
+function recordDay(){const t=today();if(!S.days.includes(t)){S.days.push(t);save('days')}}
+function streak(){const s=new Set(S.days),d=new Date();let n=0;
+ if(!s.has(fmt(d)))d.setDate(d.getDate()-1);
+ while(s.has(fmt(d))){n++;d.setDate(d.getDate()-1)}return n}
+
 /* ---------- views ---------- */
 function view(v){document.querySelectorAll('.v').forEach(e=>e.classList.toggle('on',e.id===v));
  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
@@ -171,20 +222,20 @@ function view(v){document.querySelectorAll('.v').forEach(e=>e.classList.toggle('
  window.scrollTo(0,0)}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='rd'&&!cur){if(books.length)openBook(books[0].id);else return}view(b.dataset.v)});
 
-function lib(){const h=books.map(b=>`<div class="card row sp"><div><b>${esc(b.title)}</b><div class="mut">${b.s.length} sentences</div></div>
-<div class="row"><button class="p" onclick="openBook('${b.id}')">Read</button><button onclick="delBook('${b.id}')">Delete</button></div></div>`).join('');
- $('books').innerHTML=h||'<p class="mut">No books yet. Add your first text below.</p>'}
+function lib(){const h=books.map(b=>`<div class="card row sp"><div><b>${esc(b.title)}</b><div class="mut">${b.s.length} جمله</div></div>
+<div class="row"><button class="p" onclick="openBook('${b.id}')">خواندن</button><button onclick="delBook('${b.id}')">حذف</button></div></div>`).join('');
+ $('books').innerHTML=h||'<p class="mut">هنوز کتابی نیست. متن اول خود را پایین اضافه کنید.</p>'}
 function split(t){return (t.replace(/\s+/g,' ').match(/[^.!?]+[.!?]*["')\u201d]*\s*/g)||[]).map(s=>s.trim()).filter(s=>s.length>1)}
 
 /* ---------- adding books (txt, epub, pdf) ---------- */
-$('add').onclick=async()=>{const t=$('bx').value.trim(),n=$('bt').value.trim()||'Untitled';
- if(t.length<20){$('msg').textContent='Paste some text or choose a file first.';return}
+$('add').onclick=async()=>{const t=$('bx').value.trim(),n=$('bt').value.trim()||'بدون عنوان';
+ if(t.length<20){$('msg').textContent='اول متن را وارد کنید یا فایلی انتخاب کنید.';return}
  const b={id:'b'+Date.now(),title:n,s:split(t),added:Date.now()};
- try{await idbPut('books',b.id,b)}catch(e){$('msg').textContent='Storage is full. Delete a book first.';return}
- books.push(b);$('bx').value='';$('bt').value='';$('msg').textContent='Saved.';lib();startTr(b)};
+ try{await idbPut('books',b.id,b)}catch(e){$('msg').textContent='حافظه پر است. اول یک کتاب را حذف کنید.';return}
+ books.push(b);$('bx').value='';$('bt').value='';$('msg').textContent='ذخیره شد.';lib();startTr(b)};
 
 function loadScript(url){if(!loadScript.cache)loadScript.cache={};
- return loadScript.cache[url]||(loadScript.cache[url]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=url;s.onload=res;s.onerror=()=>rej(new Error('needs internet the first time'));document.head.appendChild(s)}))}
+ return loadScript.cache[url]||(loadScript.cache[url]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=url;s.onload=res;s.onerror=()=>rej(new Error('برای بار اول به اینترنت نیاز است'));document.head.appendChild(s)}))}
 async function readEpub(f){await loadScript(JSZIP_URL);const zip=await JSZip.loadAsync(f);
  const container=await zip.file('META-INF/container.xml').async('string');
  const opfPath=new DOMParser().parseFromString(container,'application/xml').querySelector('rootfile').getAttribute('full-path');
@@ -205,13 +256,13 @@ async function readPdf(f){await loadScript(PDFJS_URL);const lib=window.pdfjsLib;
   out.push(content.items.map(it=>it.str+(it.hasEOL?'\n':' ')).join(''))}
  return out.join('\n')}
 $('bf').onchange=async e=>{const f=e.target.files[0];if(!f)return;const ext=f.name.split('.').pop().toLowerCase();
- $('msg').textContent='Reading file...';
+ $('msg').textContent='در حال خواندن فایل...';
  try{let text;if(ext==='epub')text=await readEpub(f);else if(ext==='pdf')text=await readPdf(f);else text=await f.text();
   $('bx').value=text;if(!$('bt').value)$('bt').value=f.name.replace(/\.[^.]+$/,'');
-  $('msg').textContent=text.trim()?'File loaded. Press Save book.':'No readable text found (scanned PDFs need OCR first).'}
- catch(err){$('msg').textContent='Could not read this file: '+err.message}};
+  $('msg').textContent=text.trim()?'فایل خوانده شد. دکمه «ذخیره کتاب» را بزنید.':'متنی پیدا نشد (PDF تصویری نیاز به OCR دارد).'}
+ catch(err){$('msg').textContent='خواندن فایل ممکن نشد: '+err.message}};
 
-async function delBook(id){if(!confirm('Delete this book?'))return;books=books.filter(b=>b.id!==id);await idbDel('books',id);
+async function delBook(id){if(!confirm('این کتاب حذف شود؟'))return;books=books.filter(b=>b.id!==id);await idbDel('books',id);
  if(S.prog[id]!==undefined){delete S.prog[id];save('prog')}
  if(cur&&cur.id===id)cur=null;lib()}
 
@@ -219,10 +270,9 @@ async function delBook(id){if(!confirm('Delete this book?'))return;books=books.f
 function openBook(id){cur=books.find(b=>b.id===id);cur.p=S.prog[id]||0;view('rd');page()}
 function page(){const a=cur.p*PS,tot=Math.ceil(cur.s.length/PS);let h='';
  cur.s.slice(a,a+PS).forEach((s,i)=>{const n=a+i;
-  const body=s.split(/([A-Za-z]+(?:'[A-Za-z]+)?)/).map((p,j)=>{if(!(j%2))return esc(p);
-   return `<span class="w${dimOf(p.toLowerCase())?' kn':''}">${esc(p)}</span>`}).join('');
-  h+=`<div class="sb"><span class="s" data-i="${n}">${body}</span><button class="ps" data-p="${n}">Listen</button><div class="fa tl" id="t${n}"></div></div>`});
- $('txt').innerHTML=h;
+  const body=s.split(/([A-Za-z]+(?:'[A-Za-z]+)?)/).map((p,j)=>j%2?`<span class="w">${esc(p)}</span>`:esc(p)).join('');
+  h+=`<div class="sb"><span class="s" data-i="${n}">${body}</span><button class="ps" data-p="${n}">شنیدن</button><div class="fa tl" id="t${n}"></div></div>`});
+ $('txt').innerHTML=h;paint();
  cur.s.slice(a,a+PS).forEach((s,i)=>getTr(s).then(x=>{const el=$('t'+(a+i));if(x&&el)el.textContent=x}));
  $('rt').textContent=cur.title;$('rp').textContent=(cur.p+1)+' / '+tot;$('rb').style.width=((cur.p+1)/tot*100)+'%';
  S.prog[cur.id]=cur.p;save('prog');
@@ -256,7 +306,6 @@ async function dict(w){const k=w.toLowerCase();const c=await idbGet('dict',k);if
   await idbPut('dict',k,res).catch(()=>{});return res
  }catch(e){return null}}
 
-/* Pronounce with a real recording (cached offline) or fall back to the device voice */
 async function playWord(w){const k=w.toLowerCase();const d=await dict(k);
  if(d&&d.audio){try{let blob=await idbGet('audio',k);
    if(!blob){try{const r=await fetch(d.audio);if(r.ok){blob=await r.blob();await idbPut('audio',k,blob)}}catch(e){}}
@@ -275,33 +324,55 @@ async function tr(t){const c=await getTr(t);if(c)return c;
  const parts=[];for(const p of chunks(t)){const x=await trOne(p);if(!x)return '';parts.push(x)}
  const x=parts.join(' ');await setTr(t,x);return x}
 
+/* ---------- similar word forms (rough stemming) ---------- */
+function stem(w){let s=w.toLowerCase();
+ if(s.length>5&&s.endsWith('ing')){let r=s.slice(0,-3);if(/([^aeiou])\1$/.test(r))r=r.slice(0,-1);return r}
+ if(s.length>4&&s.endsWith('ied'))return s.slice(0,-3)+'y';
+ if(s.length>4&&s.endsWith('ed'))return s.slice(0,-2);
+ if(s.length>4&&s.endsWith('ly'))return s.slice(0,-2);
+ if(s.length>3&&/(s|x|z|ch|sh)es$/.test(s))return s.slice(0,-2);
+ if(s.length>3&&s.endsWith('s')&&!s.endsWith('ss'))return s.slice(0,-1);
+ return s}
+function similar(w){const st=stem(w),cnt={};
+ for(const b of books)for(const s of b.s)for(const x of (s.toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g)||[]))
+  if(x!==w&&stem(x)===st)cnt[x]=(cnt[x]||0)+1;
+ return Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,8)}
+
 /* ---------- word sheet ---------- */
 function sheet(){const sh=$('sh'),w=cw,sen=cs;
- sh.innerHTML=(w?`<div class="row sp"><span><span class="big">${esc(w)}</span> <span class="mut" id="ipa"></span></span><button id="pw" aria-label="Pronounce word">Listen</button></div>
+ const marked=S.marks.some(m=>m.s===sen);
+ sh.innerHTML=(w?`<div class="row sp"><span><span class="big">${esc(w)}</span> <span class="mut" id="ipa"></span></span><button id="pw">شنیدن</button></div>
  <div class="fa" id="wf">...</div><div class="mut" id="df"></div>
- <div class="row" style="margin:8px 0"><button class="p" id="sw" disabled>Save word</button><button id="kn">${S.known[w]?'Unmark as known':'I already know this'}</button></div><hr style="border:0;border-top:1px solid var(--bd)">`:'')+
- `<p style="margin:8px 0">${esc(sen)}</p><div class="fa" id="sf"></div>
- <div class="row" style="margin-top:8px"><button id="ps2">Listen to sentence</button><button id="ts">Translate sentence</button><button id="cl">Close</button></div>`;
+ <div class="row" style="margin:8px 0"><button class="p" id="sw" disabled>ذخیره کلمه</button><button id="kn">${S.known[w]?'حذف از کلمات بلد':'این را بلدم'}</button></div>
+ <textarea id="nt" placeholder="یادداشت شخصی برای این کلمه" style="min-height:60px">${esc(S.notes[w]||'')}</textarea>
+ <div class="mut" id="sim"></div><hr style="border:0;border-top:1px solid var(--bd)">`:'')+
+ `<p style="margin:8px 0;direction:ltr;text-align:left">${esc(sen)}</p><div class="fa" id="sf"></div>
+ <div class="row" style="margin-top:8px"><button id="ps2">شنیدن جمله</button><button id="ts">ترجمه جمله</button><button id="mk">${marked?'حذف نشانه':'نشانه‌گذاری جمله'}</button><button id="cl">بستن</button></div>`;
  sh.classList.add('on');
  $('ps2').onclick=()=>speak(sen);
  $('cl').onclick=closeSh;
- $('ts').onclick=async()=>{$('sf').textContent='...';$('sf').textContent=(await tr(sen))||'Translation unavailable. Check your connection or try later.'};
+ $('mk').onclick=()=>{const i=S.marks.findIndex(m=>m.s===sen);
+  if(i>=0)S.marks.splice(i,1);else S.marks.push({s:sen,b:cur?cur.title:''});
+  save('marks');$('mk').textContent=i>=0?'نشانه‌گذاری جمله':'حذف نشانه'};
+ $('ts').onclick=async()=>{$('sf').textContent='...';$('sf').textContent=(await tr(sen))||'ترجمه در دسترس نیست. اتصال را بررسی کنید یا بعداً امتحان کنید.'};
  if(!w)return;
  $('pw').onclick=()=>playWord(w);
+ $('nt').onchange=()=>{const v=$('nt').value.trim();if(v)S.notes[w]=v;else delete S.notes[w];save('notes')};
+ const sims=similar(w);
+ $('sim').innerHTML=sims.length?'کلمات مشابه در کتاب‌های شما: '+sims.map(([x,n])=>`${esc(x)} (${n}×)`).join('، '):'';
  $('kn').onclick=()=>{if(S.known[w])delete S.known[w];else S.known[w]=1;save('known');
-  $('kn').textContent=S.known[w]?'Unmark as known':'I already know this';
-  document.querySelectorAll('.w').forEach(el=>{if(el.textContent.toLowerCase()===w)el.classList.toggle('kn',dimOf(w))})};
+  $('kn').textContent=S.known[w]?'حذف از کلمات بلد':'این را بلدم';paint()};
  const info={ipa:'',def:'',fa:''};
  Promise.all([tr(w),dict(w)]).then(([f,d])=>{
   if(cw!==w)return;
   info.fa=f||'';
   if(d){info.ipa=d.ipa;info.def=d.pos+(d.pos?': ':'')+d.def}
-  $('wf').textContent=f||'Translation unavailable';
+  $('wf').textContent=f||'ترجمه در دسترس نیست';
   $('ipa').textContent=info.ipa;$('df').textContent=info.def;
   $('sw').disabled=!info.fa;
  });
- $('sw').onclick=()=>{S.cards[w]=ensureCard({fa:info.fa,ipa:info.ipa,ex:sen,added:Date.now()});save('cards');
-  $('sw').textContent='Saved';$('sw').disabled=true}}
+ $('sw').onclick=()=>{if(!S.cards[w]){S.cards[w]=ensureCard({fa:info.fa,ipa:info.ipa,ex:sen,added:Date.now(),tags:[]});save('cards');snapHist()}
+  $('sw').textContent='ذخیره شد';$('sw').disabled=true;paint()}}
 function closeSh(){$('sh').classList.remove('on');document.querySelectorAll('.sel,.sel2').forEach(x=>x.classList.remove('sel','sel2'))}
 
 /* ---------- background translation ---------- */
@@ -310,17 +381,17 @@ async function startTr(b){if(running)return;running=true;let fails=0,done=0;
  try{for(let i=0;i<b.s.length;i++){const s=b.s[i];
   if(await getTr(s)){done++;continue}
   const x=await tr(s);
-  if(!x){if(++fails>=3){$('tp').textContent='Paused: daily limit or no connection. Reopen the book later.';$('msg').textContent='Translation paused. Open the book later to continue.';return}i--;await sl(4000);continue}
+  if(!x){if(++fails>=3){$('tp').textContent='متوقف شد: سقف روزانه یا نبود اینترنت. بعداً کتاب را دوباره باز کنید.';$('msg').textContent='ترجمه متوقف شد. برای ادامه بعداً کتاب را باز کنید.';return}i--;await sl(4000);continue}
   fails=0;done++;
   if(cur&&cur.id===b.id){const el=$('t'+i);if(el)el.textContent=x}
-  $('tp').textContent='Translated '+done+' / '+b.s.length;$('msg').textContent='Translating "'+b.title+'": '+done+' / '+b.s.length;
+  $('tp').textContent='ترجمه شد '+done+' از '+b.s.length;$('msg').textContent='در حال ترجمه «'+b.title+'»: '+done+' از '+b.s.length;
   await sl(600)}
-  $('tp').textContent='Translation complete';$('msg').textContent='Translation complete.'}
+  $('tp').textContent='ترجمه کامل شد';$('msg').textContent='ترجمه کامل شد.'}
  finally{running=false}}
 
 /* Key words box: words on this page with translation and pronunciation */
 async function vbox(){const t=++vt,a=cur.p*PS,seen=[];
- (cur.s.slice(a,a+PS).join(' ').toLowerCase().match(/[a-z]{6,}/g)||[]).forEach(w=>{if(!seen.includes(w)&&!dimOf(w))seen.push(w)});
+ (cur.s.slice(a,a+PS).join(' ').toLowerCase().match(/[a-z]{6,}/g)||[]).forEach(w=>{if(!seen.includes(w)&&!isKnownW(w))seen.push(w)});
  const L=seen.slice(0,12);$('vb').innerHTML=L.map(w=>`<div class="r" id="v_${w}"><b>${w}</b><span class="mut">...</span></div>`).join('');
  for(const w of L){if(t!==vt)return;const [f,d]=await Promise.all([tr(w),dict(w)]);if(t!==vt)return;
   const el=$('v_'+w);if(el)el.innerHTML=`<span><b>${esc(w)}</b> <span class="mut">${esc((d&&d.ipa)||'')}</span></span><span class="fa" style="font-size:16px">${esc(f||'')}</span>`;await sl(350)}}
@@ -333,50 +404,100 @@ function schedule(c,g){const q={again:1,hard:3,good:4,easy:5}[g];const now=Date.
  if(g==='hard')iv=Math.max(1,Math.round(iv*0.8));
  if(g==='easy')iv=Math.round(iv*1.3);
  return{ef,reps,interval:iv,due:now+iv*864e5}}
-function fmtDur(ms){if(ms<=0)return 'now';if(ms<3600e3)return Math.round(ms/60e3)+' min';return Math.round(ms/864e5)+' d'}
+function fmtDur(ms){if(ms<=0)return 'اکنون';if(ms<3600e3)return Math.round(ms/60e3)+' دقیقه';return Math.round(ms/864e5)+' روز'}
 function review(w,g){const c=S.cards[w];if(!c)return;Object.assign(c,schedule(c,g));c.last=Date.now();
  if(g==='again'){S.mist[w]=(S.mist[w]||0)+1;save('mist')}
- recordDay();save('cards')}
-function recordDay(){const t=today();if(!S.days.includes(t)){S.days.push(t);save('days')}}
-function streak(){const s=new Set(S.days),d=new Date();let n=0;
- if(!s.has(fmt(d)))d.setDate(d.getDate()-1);
- while(s.has(fmt(d))){n++;d.setDate(d.getDate()-1)}return n}
+ logEv('review',g!=='again',w);snapHist();recordDay();save('cards')}
 
 // Count study time every 30 seconds while a non-library screen is open
 setInterval(()=>{if(document.hidden)return;const v=document.querySelector('.v.on');if(!v||v.id==='lib')return;
  const t=today();S.time[t]=(S.time[t]||0)+0.5;save('time');recordDay()},30000);
 
+// Reminder: checked every minute while the app is open or running in the background
+function notify(title,body){try{navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body,icon:'icon.svg',tag:'er'})).catch(()=>{try{new Notification(title,{body})}catch(e){}})}catch(e){}}
+setInterval(()=>{if(!S.set.remt||!('Notification' in window)||Notification.permission!=='granted')return;
+ const hm=new Date().toTimeString().slice(0,5);
+ if(hm>=S.set.remt&&S.set.rn!==today()){const due=Object.keys(S.cards).filter(w=>S.cards[w].due<=Date.now()).length;
+  if(due>0){S.set.rn=today();save('set');notify('وقت مرور','کلمه‌های آماده مرور: '+due)}}},60000);
+
 /* ---------- Review screen ---------- */
 function cloze(ex,w){return ex.replace(wordRe(w),'_____')}
 function highlight(ex,w){return ex.split(wordRe(w)).map((p,i)=>i%2?`<b>${esc(p)}</b>`:esc(p)).join('')}
+function inTag(w){return !tagF||(S.cards[w].tags||[]).includes(tagF)}
 function reviewView(){
- const due=Object.keys(S.cards).filter(w=>S.cards[w].due<=Date.now()).sort((a,b)=>S.cards[a].due-S.cards[b].due);
- if(!due.length){curW='';$('rv').innerHTML='<div class="card mut">Nothing to review right now.</div>'}
+ const all=Object.keys(S.cards);
+ const tagsAll=[...new Set(all.flatMap(w=>S.cards[w].tags||[]))];
+ $('tags').innerHTML=tagsAll.length?`<div class="row"><button data-tag="" class="${!tagF?'p':''}">همه</button>${tagsAll.map(t=>`<button data-tag="${esc(t)}" class="${tagF===t?'p':''}">${esc(t)}</button>`).join('')}</div>`:'';
+ const due=all.filter(w=>S.cards[w].due<=Date.now()&&inTag(w)).sort((a,b)=>S.cards[a].due-S.cards[b].due);
+ if(!due.length){curW='';$('rv').innerHTML='<div class="card mut">الان چیزی برای مرور نیست.</div>'}
  else{curW=due[0];const w=curW,c=S.cards[w];
-  $('rv').innerHTML=`<div class="card"><div class="mut">${due.length} to review</div>
-  <p class="fa" style="font-size:19px;direction:ltr;text-align:left;color:var(--fg)">${esc(c.ex?cloze(c.ex,w):w)}</p>
-  <div class="row"><button data-a="listen">Listen</button></div>
+  $('rv').innerHTML=`<div class="card"><div class="mut">${due.length} مورد برای مرور</div>
+  <p class="fa" style="font-size:var(--fasz,19px);direction:ltr;text-align:left;color:var(--fg)">${esc(c.ex?cloze(c.ex,w):w)}</p>
+  <div class="row"><button data-a="listen">شنیدن</button></div>
   <div id="bk" style="margin-top:10px"></div>
-  <div class="row" style="margin-top:10px"><button class="p" id="show" data-a="show">Show answer</button></div></div>`}
- const k=Object.keys(S.cards);
- $('wl').innerHTML=k.map(w=>`<div class="card row sp"><div><b>${esc(w)}</b> <span class="mut">${esc(S.cards[w].ipa||'')}</span><div class="fa" style="font-size:16px">${esc(S.cards[w].fa||'')}</div><div class="mut">reviews: ${S.cards[w].reps} · next: ${fmtDur(S.cards[w].due-Date.now())}</div></div><button data-rm="${esc(w)}">Remove</button></div>`).join('')||'<p class="mut">Tap a word while reading and choose Save word.</p>'}
+  <div class="row" style="margin-top:10px"><button class="p" id="show" data-a="show">نمایش جواب</button></div></div>`}
+ const list=all.filter(inTag);
+ $('wl').innerHTML=list.map(w=>{const c=S.cards[w];
+  if(editW===w)return `<div class="card" data-ew="${esc(w)}"><b>${esc(w)}</b>
+   <input data-f="fa" value="${esc(c.fa||'')}" placeholder="معنی فارسی">
+   <input data-f="ex" value="${esc(c.ex||'')}" placeholder="جمله">
+   <input data-f="tags" value="${esc((c.tags||[]).join('، '))}" placeholder="برچسب‌ها با ویرگول (مثلاً: کاری، مکالمه)">
+   <div class="row"><button class="p" data-sv="${esc(w)}">ذخیره تغییرات</button><button data-can="1">انصراف</button></div></div>`;
+  return `<div class="card row sp"><div><b>${esc(w)}</b> <span class="mut">${esc(c.ipa||'')}</span><div class="fa" style="font-size:16px">${esc(c.fa||'')}</div>
+   <div class="mut">تعداد مرور: ${c.reps} · بعدی: ${fmtDur(c.due-Date.now())}${(c.tags||[]).length?' · '+esc(c.tags.join('، ')):''}</div></div>
+   <div class="row"><button data-ed="${esc(w)}">ویرایش</button><button data-rm="${esc(w)}">حذف</button></div></div>`}).join('')||'<p class="mut">هنگام خواندن روی یک کلمه بزنید و «ذخیره کلمه» را انتخاب کنید.</p>';
+ $('mkl').innerHTML=S.marks.map((m,i)=>`<div class="card"><div style="direction:ltr;text-align:left">${esc(m.s)}</div><div class="mut">${esc(m.b||'')}</div>
+  <div class="row"><button data-pl="${i}">شنیدن</button><button data-mr="${i}">حذف</button></div></div>`).join('')||'<p class="mut">جمله‌ای نشانه‌گذاری نشده است.</p>';
+ const known=Object.keys(S.known).sort();
+ $('kcount').textContent=known.length;
+ $('kl').innerHTML=known.map(w=>`<span class="chip">${esc(w)} <button data-kr="${esc(w)}" style="padding:0 6px">×</button></span>`).join('')||'<p class="mut">هنوز کلمه‌ای علامت نخورده است.</p>';
+}
 $('rv').onclick=e=>{const b=e.target.closest('[data-a]');if(!b||!curW)return;const a=b.dataset.a;
  if(a==='listen')playWord(curW);
  else if(a==='show')showAns();
- else{review(curW,a);reviewView()}};
+ else{review(curW,a);reviewView();paint()}};
+const GL={again:'دوباره',hard:'سخت',good:'خوب',easy:'آسان'};
 function showAns(){const w=curW,c=S.cards[w];
  $('bk').innerHTML=`<div class="big">${esc(w)} <span class="mut">${esc(c.ipa||'')}</span></div><div class="fa">${esc(c.fa||'')}</div>${c.ex?`<p style="direction:ltr;text-align:left">${highlight(c.ex,w)}</p>`:''}
- <div class="row" style="margin-top:10px">${['again','hard','good','easy'].map(g=>`<button data-a="${g}" class="${g==='good'?'p':''}">${g} · ${fmtDur(schedule(c,g).due-Date.now())}</button>`).join('')}</div>`;
+ ${S.notes[w]?`<div class="mut">یادداشت: ${esc(S.notes[w])}</div>`:''}
+ <div class="row" style="margin-top:10px">${['again','hard','good','easy'].map(g=>`<button data-a="${g}" class="${g==='good'?'p':''}">${GL[g]} · ${fmtDur(schedule(c,g).due-Date.now())}</button>`).join('')}</div>`;
  $('show').style.display='none'}
-$('wl').onclick=e=>{const b=e.target.closest('[data-rm]');if(b){delete S.cards[b.dataset.rm];save('cards');reviewView()}};
+
+$('tags').onclick=e=>{const b=e.target.closest('[data-tag]');if(b){tagF=b.dataset.tag;reviewView()}};
+$('wl').onclick=e=>{const t=e.target;
+ const rm=t.closest('[data-rm]');if(rm){delete S.cards[rm.dataset.rm];save('cards');reviewView();return}
+ const ed=t.closest('[data-ed]');if(ed){editW=ed.dataset.ed;reviewView();return}
+ if(t.closest('[data-can]')){editW='';reviewView();return}
+ const sv=t.closest('[data-sv]');if(sv){const box=sv.closest('[data-ew]'),w=sv.dataset.sv,c=S.cards[w];
+  c.fa=box.querySelector('[data-f=fa]').value.trim();c.ex=box.querySelector('[data-f=ex]').value.trim();
+  c.tags=box.querySelector('[data-f=tags]').value.split(/[,،]/).map(x=>x.trim()).filter(Boolean);
+  editW='';save('cards');reviewView()}};
+$('mkl').onclick=e=>{const p=e.target.closest('[data-pl]'),r=e.target.closest('[data-mr]');
+ if(p)speak(S.marks[+p.dataset.pl].s);
+ if(r){S.marks.splice(+r.dataset.mr,1);save('marks');reviewView()}};
+$('kl').onclick=e=>{const b=e.target.closest('[data-kr]');if(b){delete S.known[b.dataset.kr];save('known');reviewView();paint()}};
+
 $('csv').onclick=()=>{const rows=Object.keys(S.cards).map(w=>[w,S.cards[w].fa,S.cards[w].ipa,S.cards[w].ex].map(x=>'"'+String(x||'').replace(/"/g,'""')+'"').join(','));
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.join('\n')],{type:'text/csv'}));a.download='words.csv';a.click()};
 $('cp').onclick=()=>{const t=Object.keys(S.cards).map(w=>w+' - '+S.cards[w].fa).join('\n');
- navigator.clipboard.writeText(t).then(()=>{$('cp').textContent='Copied'},()=>{$('cp').textContent='Copy failed'})};
+ navigator.clipboard.writeText(t).then(()=>{$('cp').textContent='کپی شد'},()=>{$('cp').textContent='کپی نشد'})};
 $('dla').onclick=async()=>{let n=0;
  for(const w of Object.keys(S.cards)){const d=await dict(w);
   if(d&&d.audio&&!(await idbGet('audio',w))){try{const r=await fetch(d.audio);if(r.ok){await idbPut('audio',w,await r.blob());n++}}catch(e){}}}
- $('dla').textContent='Saved '+n+' pronunciation(s)'};
+ $('dla').textContent=n+' تلفظ ذخیره شد'};
+
+/* CSV / Anki import */
+function parseCSV(text){return text.split(/\r?\n/).filter(l=>l.trim()).map(l=>{const delim=l.includes('\t')?'\t':',';const out=[];let cur='',q=false;
+ for(let i=0;i<l.length;i++){const ch=l[i];
+  if(q){if(ch==='"'&&l[i+1]==='"'){cur+='"';i++}else if(ch==='"')q=false;else cur+=ch}
+  else if(ch==='"')q=true;else if(ch===delim){out.push(cur);cur=''}else cur+=ch}
+ out.push(cur);return out.map(x=>x.replace(/<[^>]+>/g,'').trim())})}
+$('ankif').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+ const rows=parseCSV(await f.text());let added=0,skipped=0;
+ for(const r of rows){const w=(r[0]||'').toLowerCase();
+  if(!/^[a-z][a-z' -]*$/.test(w)||S.cards[w]){skipped++;continue}
+  S.cards[w]=ensureCard({fa:r[1]||'',ipa:r[2]||'',ex:r[3]||'',added:Date.now(),tags:[]});added++}
+ save('cards');snapHist();$('ankm').textContent=`${added} کلمه اضافه شد، ${skipped} مورد نادیده گرفته شد.`;reviewView();paint()};
 
 /* ---------- Practice ---------- */
 let pm='quiz';
@@ -386,106 +507,154 @@ function practice(m){if(m)pm=m;
 $('m1').onclick=()=>practice('quiz');$('m2').onclick=()=>practice('dict');$('m3').onclick=()=>practice('speak');
 
 function quiz(){const ws=Object.keys(S.cards).filter(w=>S.cards[w].fa);
- if(ws.length<2){$('pz').innerHTML='<div class="card mut">Save at least 2 words with translations to start a quiz.</div>';return}
+ if(ws.length<2){$('pz').innerHTML='<div class="card mut">برای شروع آزمون حداقل ۲ کلمه با ترجمه ذخیره کنید.</div>';return}
  const w=ws[Math.floor(Math.random()*ws.length)],right=S.cards[w].fa;
  const pool=[...new Set(ws.filter(x=>x!==w).map(x=>S.cards[x].fa))].filter(f=>f!==right).sort(()=>Math.random()-.5).slice(0,3);
  const opts=[right,...pool].sort(()=>Math.random()-.5);
- $('pz').innerHTML=`<div class="card"><div class="mut">Choose the Persian meaning</div><div class="big" style="margin:8px 0">${esc(w)}</div>
+ $('pz').innerHTML=`<div class="card"><div class="mut">معنی فارسی را انتخاب کنید</div><div class="big" style="margin:8px 0;direction:ltr;text-align:left">${esc(w)}</div>
   ${opts.map((o,i)=>`<button class="opt fa" data-i="${i}">${esc(o)}</button>`).join('')}<div id="qr" class="mut" style="margin-top:8px"></div></div>`;
  $('pz').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i]===right;
-  review(w,ok?'good':'again');
-  $('qr').innerHTML=ok?'<span class="ok">Correct ✓</span>':`<span class="bad">Wrong</span> — ${esc(right)}`;
+  review(w,ok?'good':'again');logEv('quiz',ok,w);
+  $('qr').innerHTML=ok?'<span class="ok">درست ✓</span>':`<span class="bad">غلط</span> — ${esc(right)}`;
   $('pz').querySelectorAll('.opt').forEach(x=>x.disabled=true);
   setTimeout(()=>{if(pm==='quiz')quiz()},1200)})}
 
 let dsent='';
 function normTok(s){return s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean)}
 function dictation(){const all=books.flatMap(b=>b.s).filter(s=>s.split(' ').length>=3&&s.length<200);
- if(!all.length){$('pz').innerHTML='<div class="card mut">Add a book first.</div>';return}
+ if(!all.length){$('pz').innerHTML='<div class="card mut">اول یک کتاب اضافه کنید.</div>';return}
  dsent=all[Math.floor(Math.random()*all.length)];
- $('pz').innerHTML=`<div class="card"><div class="mut">Listen and type what you hear</div>
- <div class="row"><button id="dp" class="p">Play</button><button id="dn">Next</button></div>
- <textarea id="di" placeholder="Type here" style="min-height:70px;margin-top:8px"></textarea>
- <div class="row"><button id="dc">Check</button></div><div id="dr" style="margin-top:8px"></div></div>`;
+ $('pz').innerHTML=`<div class="card"><div class="mut">گوش کنید و آنچه را می‌شنوید تایپ کنید</div>
+ <div class="row"><button id="dp" class="p">پخش</button><button id="dn">بعدی</button></div>
+ <textarea id="di" placeholder="اینجا تایپ کنید" style="min-height:70px;margin-top:8px;direction:ltr"></textarea>
+ <div class="row"><button id="dc">بررسی</button></div><div id="dr" style="margin-top:8px"></div></div>`;
  $('dp').onclick=()=>speak(dsent);$('dn').onclick=()=>dictation();
  $('dc').onclick=()=>{const a=normTok($('di').value),b=normTok(dsent);
   const same=b.filter((w,i)=>a[i]===w).length,pct=Math.round(same/b.length*100);
+  logEv('dict',pct>=80,'');
   $('dr').innerHTML=`<div class="big">${pct}%</div><p style="direction:ltr;text-align:left">${b.map((w,i)=>`<span class="${a[i]===w?'ok':'bad'}">${esc(w)}</span>`).join(' ')}</p>`}}
 
 function speaking(){const ws=Object.keys(S.cards);
- if(!ws.length){$('pz').innerHTML='<div class="card mut">Save some words first.</div>';return}
+ if(!ws.length){$('pz').innerHTML='<div class="card mut">اول چند کلمه ذخیره کنید.</div>';return}
  const w=ws[Math.floor(Math.random()*ws.length)];
- $('pz').innerHTML=`<div class="card"><div class="mut">Say this word</div><div class="big" style="margin:8px 0">${esc(w)}</div>
- <div class="row"><button id="sl">Listen</button><button id="sr" class="p">Record myself</button><button id="sc">Check with speech</button><button id="sn">Next</button></div>
+ $('pz').innerHTML=`<div class="card"><div class="mut">این کلمه را بگویید</div><div class="big" style="margin:8px 0;direction:ltr;text-align:left">${esc(w)}</div>
+ <div class="row"><button id="sl">شنیدن</button><button id="sr" class="p">ضبط صدای من</button><button id="sc">بررسی با تشخیص گفتار</button><button id="sn">بعدی</button></div>
  <audio id="sa" controls style="width:100%;margin-top:10px;display:none"></audio><div id="sres" style="margin-top:8px"></div></div>`;
  $('sl').onclick=()=>playWord(w);$('sn').onclick=()=>speaking();
  let mr=null,st=null;
  $('sr').onclick=async()=>{if(mr&&mr.state==='recording'){mr.stop();return}
   try{st=await navigator.mediaDevices.getUserMedia({audio:true});const chunks=[];mr=new MediaRecorder(st);
    mr.ondataavailable=e=>chunks.push(e.data);
-   mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());const a=$('sa');a.src=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));a.style.display='block';$('sr').textContent='Record myself'};
-   mr.start();$('sr').textContent='Stop'}
-  catch(e){$('sres').textContent='Microphone not available.'}};
+   mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());const a=$('sa');a.src=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/webm'}));a.style.display='block';$('sr').textContent='ضبط صدای من'};
+   mr.start();$('sr').textContent='توقف'}
+  catch(e){$('sres').textContent='میکروفون در دسترس نیست.'}};
  $('sc').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){$('sres').textContent='Speech recognition is not supported on this browser. Use Listen and Record to compare.';return}
+  if(!SR){$('sres').textContent='تشخیص گفتار در این مرورگر پشتیبانی نمی‌شود. با «شنیدن» و «ضبط صدای من» مقایسه کنید.';return}
   const r=new SR();r.lang='en-US';r.interimResults=false;r.maxAlternatives=3;
-  $('sres').textContent='Listening...';
+  $('sres').textContent='در حال گوش دادن...';
   r.onresult=e=>{const alts=[...e.results[0]].map(x=>x.transcript.toLowerCase().trim());
    const ok=alts.some(t=>t.split(/\s+/).includes(w.toLowerCase()));
-   $('sres').innerHTML=`Heard: <b>${esc(alts[0])}</b> — ${ok?'<span class="ok">Correct ✓</span>':'<span class="bad">Try again</span>'}`};
-  r.onerror=e=>{$('sres').textContent='Error: '+e.error};r.start()}}
+   logEv('speak',ok,w);
+   $('sres').innerHTML=`شنیده شد: <b style="direction:ltr">${esc(alts[0])}</b> — ${ok?'<span class="ok">درست ✓</span>':'<span class="bad">دوباره تلاش کنید</span>'}`};
+  r.onerror=e=>{$('sres').textContent='خطا: '+e.error};r.start()}}
 
 /* ---------- Stats ---------- */
-function statsView(){const k=Object.keys(S.cards),now=Date.now();
- const learned=k.filter(w=>S.cards[w].interval>=21).length,due=k.filter(w=>S.cards[w].due<=now).length,pct=k.length?Math.round(learned/k.length*100):0;
+function statsView(){const k=Object.keys(S.cards),now=Date.now(),lc=learnedCount(),pct=k.length?Math.round(lc/k.length*100):0;
  const totalMin=Math.round(Object.values(S.time).reduce((a,b)=>a+b,0));
+ const due=k.filter(w=>S.cards[w].due<=now).length;
+ const t=today(),sod=new Date();sod.setHours(0,0,0,0);
+ const newToday=k.filter(w=>S.cards[w].added>=sod.getTime()).length,minToday=Math.round(S.time[t]||0);
+ $('goal').innerHTML=`<div class="card">
+  <div>کلمه‌های جدید امروز: ${newToday} از ${S.set.gw}</div><div class="bar"><i style="width:${Math.min(100,newToday/S.set.gw*100)}%"></i></div>
+  <div>دقیقه مطالعه امروز: ${minToday} از ${S.set.gm}</div><div class="bar"><i style="width:${Math.min(100,minToday/S.set.gm*100)}%"></i></div></div>`;
  $('sum').innerHTML=`<div class="card">
-  <div class="row sp"><span>Saved words</span><b>${k.length}</b></div>
-  <div class="row sp"><span>Due now</span><b>${due}</b></div>
-  <div class="row sp"><span>Learned (next review 21+ days away)</span><b>${learned} (${pct}%)</b></div>
+  <div class="row sp"><span>کلمات ذخیره‌شده</span><b>${k.length}</b></div>
+  <div class="row sp"><span>آماده مرور</span><b>${due}</b></div>
+  <div class="row sp"><span>یادگرفته‌شده (مرور بعدی ۲۱+ روز دیگر)</span><b>${lc} (${pct}%)</b></div>
   <div class="bar"><i style="width:${pct}%"></i></div>
-  <div class="row sp"><span>Study streak</span><b>${streak()} day(s)</b></div>
-  <div class="row sp"><span>Total study time</span><b>${totalMin} min</b></div></div>`;
+  <div class="row sp"><span>روزهای پشت‌سرهم مطالعه</span><b>${streak()} روز</b></div>
+  <div class="row sp"><span>کل زمان مطالعه</span><b>${totalMin} دقیقه</b></div></div>`;
+ const since=now-7*864e5;
+ const d7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);d7.push(fmt(d))}
+ const min7=d7.reduce((a,d)=>a+(S.time[d]||0),0);
+ const ev=S.log.filter(e=>e.t>=since),wrong=ev.filter(e=>!e.ok).length;
+ const newW=k.filter(w=>S.cards[w].added>=since).length;
+ const before=S.hist[fmt(new Date(since))]||0;
+ $('week').innerHTML=`<div class="card">
+  <div class="row sp"><span>زمان مطالعه</span><b>${Math.round(min7)} دقیقه</b></div>
+  <div class="row sp"><span>کلمه‌های جدید</span><b>${newW}</b></div>
+  <div class="row sp"><span>تعداد پاسخ‌ها</span><b>${ev.length}</b></div>
+  <div class="row sp"><span>اشتباه‌ها</span><b>${wrong} (${ev.length?Math.round(wrong/ev.length*100):0}%)</b></div>
+  <div class="row sp"><span>تغییر کلمات یادگرفته‌شده (تقریبی)</span><b>${lc-before>=0?'+':''}${lc-before}</b></div></div>`;
+ const d30=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);d30.push(fmt(d))}
+ let last=0;const vals=d30.map(d=>{if(S.hist[d]!==undefined)last=S.hist[d];return last});
+ const mxv=Math.max(1,...vals);
+ $('lchart').innerHTML=vals.map((v,i)=>`<div title="${d30[i]}: ${v}" style="height:${Math.max(2,v/mxv*100)}%"></div>`).join('');
  const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(fmt(d))}
  const mx=Math.max(1,...days.map(d=>S.time[d]||0));
- $('chart').innerHTML=days.map(d=>`<div title="${d}: ${Math.round(S.time[d]||0)} min" style="height:${Math.max(2,(S.time[d]||0)/mx*100)}%"></div>`).join('');
+ $('chart').innerHTML=days.map(d=>`<div title="${d}: ${Math.round(S.time[d]||0)} دقیقه" style="height:${Math.max(2,(S.time[d]||0)/mx*100)}%"></div>`).join('');
+ const types={review:'مرور',quiz:'آزمون',dict:'دیکته',speak:'تلفظ'};
+ $('errs').innerHTML=Object.entries(types).map(([kk,l])=>{const e=S.log.filter(x=>x.k===kk),b=e.filter(x=>!x.ok).length;
+  return `<div class="r"><b>${l}</b><span class="mut">${e.length} پاسخ · ${b} اشتباه (${e.length?Math.round(b/e.length*100):0}%)</span></div>`}).join('');
+ const str=streak();
+ const B=[[lc>=10,'۱۰ کلمه یادگرفته'],[lc>=50,'۵۰ کلمه یادگرفته'],[lc>=100,'۱۰۰ کلمه یادگرفته'],[lc>=500,'۵۰۰ کلمه یادگرفته'],
+  [str>=7,'۷ روز پشت‌سرهم'],[str>=30,'۳۰ روز پشت‌سرهم'],[totalMin>=60,'یک ساعت مطالعه'],[totalMin>=600,'ده ساعت مطالعه']];
+ $('badges').innerHTML=B.map(([ok,l])=>`<span class="chip ${ok?'ok':''}">${ok?'✓ ':'○ '}${l}</span>`).join('');
  const ms=Object.entries(S.mist).sort((a,b)=>b[1]-a[1]).slice(0,10);
- $('mist').innerHTML=ms.map(([w,n])=>`<div class="r"><b>${esc(w)}</b><span class="mut">${n} mistake(s)</span></div>`).join('')||'<p class="mut">No mistakes yet.</p>';
+ $('mist').innerHTML=ms.map(([w,n])=>`<div class="r"><b>${esc(w)}</b><span class="mut">${n} بار اشتباه</span></div>`).join('')||'<p class="mut">هنوز اشتباهی ثبت نشده.</p>';
  const cnt={};for(const b of books)for(const s of b.s)for(const w of (s.toLowerCase().match(/[a-z]{3,}/g)||[]))if(!COMMON.has(w))cnt[w]=(cnt[w]||0)+1;
  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,30);
- $('freq').innerHTML=top.map(([w,n])=>`<div class="r"><span><b>${esc(w)}</b> ${S.cards[w]?'✓':''}</span><span class="mut">${n}×</span></div>`).join('')||'<p class="mut">Add books to see frequent words.</p>'}
+ $('freq').innerHTML=top.map(([w,n])=>`<div class="r"><span><b>${esc(w)}</b> ${S.cards[w]?'✓':''}</span><span class="mut">${n}×</span></div>`).join('')||'<p class="mut">برای دیدن کلمات پرتکرار، کتاب اضافه کنید.</p>'}
 $('lk').oninput=()=>{const w=$('lk').value.trim().toLowerCase();if(!w){$('lkr').innerHTML='';return}
  const st=S.wstats[w],c=S.cards[w];
  $('lkr').innerHTML=`<div class="card">
-  <div>${st?`Opened on ${st.n} page visit(s):`:'Not in pages you have opened.'}</div>
-  ${st?st.refs.slice(0,10).map(r=>`<div class="mut">${esc(r.b)} — page ${r.p}</div>`).join(''):''}
-  <div style="margin-top:6px">${c?`Saved · reviews ${c.reps} · next in ${fmtDur(c.due-Date.now())}`:'<span class="mut">Not saved</span>'}</div>
-  <div>Mistakes: ${S.mist[w]||0}</div>${S.known[w]?'<div>Marked as known</div>':''}</div>`};
+  <div>${st?`در ${st.n} بار باز کردن صفحه دیده شده:`:'در صفحاتی که باز کرده‌اید نیست.'}</div>
+  ${st?st.refs.slice(0,10).map(r=>`<div class="mut">${esc(r.b)} — صفحه ${r.p}</div>`).join(''):''}
+  <div style="margin-top:6px">${c?`ذخیره شده · تعداد مرور ${c.reps} · بعدی در ${fmtDur(c.due-Date.now())}`:'<span class="mut">ذخیره نشده</span>'}</div>
+  <div>اشتباه‌ها: ${S.mist[w]||0}</div>${S.known[w]?'<div>به‌عنوان بلد علامت خورده</div>':''}
+  ${S.notes[w]?`<div>یادداشت: ${esc(S.notes[w])}</div>`:''}</div>`};
 
 /* ---------- Backup ---------- */
 $('exp').onclick=()=>{const kv={};for(const k of KEYS)kv[k]=S[k];
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'english-reader',v:3,books,kv})],{type:'application/json'}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'english-reader',v:4,books,kv})],{type:'application/json'}));
  a.download='english-reader-backup-'+today()+'.json';a.click()};
 $('imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;
  try{const d=JSON.parse(await f.text());if(d.app!=='english-reader')throw new Error('not a backup');
   for(const b of d.books)await idbPut('books',b.id,b);
   for(const k of KEYS)if(d.kv[k]!==undefined){S[k]=d.kv[k];await save(k)}
   location.reload()}
- catch(err){$('bmsg').textContent='This file is not a valid backup.'}};
+ catch(err){$('bmsg').textContent='این فایل پشتیبان معتبر نیست.'}};
 
 /* ---------- Settings ---------- */
 const FT={d:['system-ui',1.8],a:["'Aref Ruqaa',serif",2],k:['Katibeh,serif',2],n:["'Noto Nastaliq Urdu',serif",2.6],c:['Custom,system-ui',2]};
 function setFont(v){const f=FT[v]||FT.a,r=document.documentElement.style;r.setProperty('--ff',f[0]);r.setProperty('--lh',f[1]);S.set.ft=v;save('set')}
+function applySizes(){const r=document.documentElement.style;r.setProperty('--fesz',S.set.fe+'px');r.setProperty('--fasz',S.set.fp+'px');
+ $('fev').textContent=S.set.fe;$('fpv').textContent=S.set.fp}
+function applyTheme(){const el=document.documentElement;if(S.set.th==='auto')el.removeAttribute('data-theme');else el.setAttribute('data-theme',S.set.th)}
 $('ft').onchange=()=>setFont($('ft').value);
 $('em').onchange=()=>{S.set.em=$('em').value.trim();save('set')};
-$('hc').onchange=()=>{S.set.hc=$('hc').checked;save('set');if(cur&&$('rd').classList.contains('on'))page()};
+$('hc').onchange=()=>{S.set.hc=$('hc').checked;save('set');paint();if(cur&&$('rd').classList.contains('on'))vbox()};
+$('col').onchange=()=>{S.set.col=$('col').checked;save('set');document.body.classList.toggle('nocol',!S.set.col)};
+$('th').onchange=()=>{S.set.th=$('th').value;save('set');applyTheme()};
+$('fe').oninput=()=>{S.set.fe=+$('fe').value;applySizes();save('set')};
+$('fp').oninput=()=>{S.set.fp=+$('fp').value;applySizes();save('set')};
+$('gw').onchange=()=>{S.set.gw=Math.max(1,+$('gw').value||20);save('set')};
+$('gm').onchange=()=>{S.set.gm=Math.max(1,+$('gm').value||15);save('set')};
+$('remt').onchange=()=>{S.set.remt=$('remt').value;save('set')};
+$('remb').onclick=async()=>{if(!('Notification' in window)){$('remm').textContent='این مرورگر یادآوری را پشتیبانی نمی‌کند.';return}
+ const p=await Notification.requestPermission();
+ $('remm').textContent=p==='granted'?'یادآوری فعال شد. ساعت را در بالا تنظیم کرده‌اید.':'اجازه داده نشد. می‌توانید از تنظیمات مرورگر فعال کنید.'};
 $('tg').onchange=()=>$('txt').classList.toggle('hid',!$('tg').checked);
 
 /* ---------- start ---------- */
 (async()=>{
  await load();
  $('ft').value=S.set.ft;setFont(S.set.ft);
- $('em').value=S.set.em;$('hc').checked=S.set.hc;
+ $('em').value=S.set.em;$('hc').checked=S.set.hc;$('col').checked=S.set.col;
+ $('th').value=S.set.th;$('fe').value=S.set.fe;$('fp').value=S.set.fp;
+ $('gw').value=S.set.gw;$('gm').value=S.set.gm;$('remt').value=S.set.remt||'';
+ document.body.classList.toggle('nocol',!S.set.col);
+ applyTheme();applySizes();
  lib();
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();

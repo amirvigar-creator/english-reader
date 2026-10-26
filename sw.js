@@ -1,5 +1,5 @@
-// Service worker: makes the app open and work offline after the first visit.
-const CACHE = 'english-reader-v3';
+// Service worker: makes the app work offline and always fetches the newest HTML when online.
+const CACHE = 'english-reader-v4';
 const SHELL = ['./english-reader-v3.html', './manifest.webmanifest', './icon.svg'];
 const CDN_HOSTS = ['cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
@@ -15,8 +15,6 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Cache-first for the app files and the CDN libraries (fonts, JSZip, pdf.js).
-// Dictionary and translation API responses are not handled here; the app stores them in IndexedDB.
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
@@ -25,16 +23,25 @@ self.addEventListener('fetch', e => {
   const isCdn = CDN_HOSTS.includes(url.hostname);
   if (!isOwn && !isCdn) return;
 
+  // HTML pages: try the network first so updates appear right away; use the cache when offline.
+  if (isOwn && (req.mode === 'navigate' || url.pathname.endsWith('.html'))) {
+    e.respondWith(
+      fetch(req).then(res => {
+        if (res && res.ok) caches.open(CACHE).then(c => c.put(req, res.clone()));
+        return res;
+      }).catch(() => caches.match(req).then(hit => hit || caches.match('./english-reader-v3.html')))
+    );
+    return;
+  }
+
+  // Everything else (icons, manifest, CDN libraries, fonts): cache first.
   e.respondWith(
     caches.match(req).then(hit => {
       if (hit) return hit;
       return fetch(req).then(res => {
-        if (res && (res.ok || res.type === 'opaque')) {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(req, copy));
-        }
+        if (res && (res.ok || res.type === 'opaque')) caches.open(CACHE).then(c => c.put(req, res.clone()));
         return res;
-      }).catch(() => caches.match('./english-reader-v3.html'));
+      });
     })
   );
 });
